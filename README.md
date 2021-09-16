@@ -25,6 +25,6 @@ Static Site Generator Open Source Development
 ## Author
 [Minsu Kim](https://github.com/mkim219)
 
-##License
+## License
 [MIT](https://github.com/mkim219/kimchi-ssg/blob/main/LICENSE)
 
