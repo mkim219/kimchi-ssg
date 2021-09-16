@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "A1eCrlH55U1dO0jALILcnqw+ap14sLnqA5lT7xy00Kf3tzpHaKllXUZw70AvXMVl4quQQPKuVTCc4C7UCzvDog==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\MinsuKim\\Desktop\\Seneca=nw\\OSD600\\Release0.1\\kimchi-ssg\\kimchi-ssg\\kimchi-ssg.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\MinsuKim\\.nuget\\packages\\htmlagilitypack\\1.11.36\\htmlagilitypack.1.11.36.nupkg.sha512",
+    "C:\\Users\\MinsuKim\\.nuget\\packages\\microsoft.csharp\\4.4.1\\microsoft.csharp.4.4.1.nupkg.sha512",
+    "C:\\Users\\MinsuKim\\.nuget\\packages\\system.commandline\\2.0.0-beta1.21308.1\\system.commandline.2.0.0-beta1.21308.1.nupkg.sha512",
+    "C:\\Users\\MinsuKim\\.nuget\\packages\\system.memory\\4.5.4\\system.memory.4.5.4.nupkg.sha512"
+  ],
+  "logs": []
+}
