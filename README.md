@@ -22,3 +22,9 @@ Static Site Generator Open Source Development
 - `--version` Show version information
 - `-?, -h, --help` Show help and usage information
 
+## Author
+[Minsu Kim](https://github.com/mkim219)
+
+##License
+[MIT](https://github.com/mkim219/kimchi-ssg/blob/main/LICENSE)
+
