@@ -105,7 +105,7 @@ namespace kimchi_ssg
             if (textPath.Contains(".txt"))
             {
                 var text = File.ReadAllText(textPath);
-                string fileName = Path.GetFileName(textPath);
+                string fileName = Path.GetFileNameWithoutExtension(textPath);
 
                 string[] contents = text.Split("\n\n");
                 toHTMLfile = generateHTMLStr(html, contents, fileName);
@@ -147,8 +147,8 @@ namespace kimchi_ssg
 
                     List<string> pathSplit = filePath.Split("\\").ToList();
                     //get title 
-                    string fileName = Path.GetFileName(filePath);
-
+                    string fileName = Path.GetFileNameWithoutExtension(filePath);
+                    Console.WriteLine(fileName);
                     toHTMLfile = generateHTMLStr(html, contents, fileName);
 
                     //get saving loation
