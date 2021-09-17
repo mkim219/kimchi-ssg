@@ -12,27 +12,33 @@ namespace kimchi_ssg
     class Program
     {
 
-
         static string HTMLstr = @"<!doctype html>
                                 <html lang = ""en"">
                                 <head>
-                                  <meta charset = ""utf-8"">
-                                  <title> Filename </title>
-                                  <meta name = ""viewport"" content = ""width=device-width, initial-scale=1"">
+                                <meta charset = ""utf-8"">
+                                <title> Filename </title>
+                                <meta name = ""viewport"" content = ""width=device-width, initial-scale=1"">
                                 </head>
                                 <body>
-                                  
                                 </body>
                                 </html>";
 
         static string style = @"<style>
-                                * { 
-                                text-align: justify;
-                                text-align: center;
-                                background-color: #9999FF;
-                                color: #FFFFFF
-                                }
-                                </style>";
+                                *{
+                                    background-color: #9999FF;
+                                 }
+                                div { 
+                                      color: #FFFFFF;
+                                      position: absolute;
+                                      width: 700px;
+                                      height: -100px;
+                                      top: 0;
+                                      bottom: 0;
+                                      left: 0;
+                                      right: 0;
+                                      margin: auto;
+                                  }
+                               </style>";
 
         static string generateHTMLStr(string[] source, string[] elements, string title)
         {
@@ -59,6 +65,7 @@ namespace kimchi_ssg
 
                 if (x.Contains("<body>"))
                 {
+                    toHtml.Add("<div>");
                     foreach (var s in elements)
                     {
 
@@ -77,6 +84,7 @@ namespace kimchi_ssg
 
                         count++;
                     }
+                    toHtml.Add("</div>");
 
                 }
 
@@ -89,51 +97,42 @@ namespace kimchi_ssg
         {
             string[] html = HTMLstr.Split("\n");
 
-            //read text file or folder directory
-
             string textPath = Path.GetFullPath(s);
-            string titleWithExt = textPath.Substring(textPath.LastIndexOf("\\") + 1);
-            string title = titleWithExt.Substring(0, titleWithExt.LastIndexOf("."));
 
-            string correctPath = textPath.Substring(0, textPath.LastIndexOf("\\"));
+            string txtDirectory = Path.GetDirectoryName(textPath);
 
             string toHTMLfile = string.Empty;
             if (textPath.Contains(".txt"))
             {
                 var text = File.ReadAllText(textPath);
-                string[] contents = text.Split("\n\n");
+                string fileName = Path.GetFileName(textPath);
 
-                toHTMLfile = generateHTMLStr(html, contents, title);
-                string removeExt = textPath.Substring(0, textPath.Length - 4);
-                string fileName = removeExt.Substring(removeExt.LastIndexOf("\\"));
-                string saveLoc = textPath.Substring(0, textPath.LastIndexOf("\\"));
+                string[] contents = text.Split("\n\n");
+                toHTMLfile = generateHTMLStr(html, contents, fileName);
 
                 try
                 {
-                    if (!Directory.Exists(saveLoc + "\\dist"))
+                    if (!Directory.Exists(txtDirectory + "\\dist"))
                     {
-                        Directory.CreateDirectory(saveLoc + "\\dist");
+                        Directory.CreateDirectory(txtDirectory + "\\dist");
                     }
 
                     var doc = new HtmlDocument();
                     var node = HtmlNode.CreateNode(toHTMLfile);
                     doc.DocumentNode.AppendChild(node);
-                    doc.Save(saveLoc + "\\dist" + fileName + ".html");
+                    doc.Save(txtDirectory + "\\dist" + "\\" + fileName + ".html");
 
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
                 }
-
-
             }
             else // Case user input the folder path
             {
                 
-                string folderPath = string.Join("\\", correctPath);
                 List<string> txtList = new List<string>();
-                DirectoryInfo di = new DirectoryInfo(folderPath);
+                DirectoryInfo di = new DirectoryInfo(txtDirectory);
 
                 foreach (var dir in di.EnumerateFiles("*", SearchOption.AllDirectories).Where(x => x.ToString().EndsWith(".txt")))
                 {
@@ -142,30 +141,29 @@ namespace kimchi_ssg
 
                 foreach (var filePath in txtList)
                 {
-                    // extract the text's paragrah 
+                    // read the text's paragrah 
                     var text = File.ReadAllText(filePath);
                     string[] contents = text.Split("\n\n");
 
-                    //get title 
                     List<string> pathSplit = filePath.Split("\\").ToList();
-                    string titleM = pathSplit.Last().Substring(0, pathSplit.Last().LastIndexOf("."));
+                    //get title 
+                    string fileName = Path.GetFileName(filePath);
 
-                    toHTMLfile = generateHTMLStr(html, contents, titleM);
+                    toHTMLfile = generateHTMLStr(html, contents, fileName);
 
-                    string removeExt = filePath.Substring(0, filePath.Length - 4);
-                    string fileName = removeExt.Substring(removeExt.LastIndexOf("\\"));
-                    string saveLoc = filePath.Substring(0, filePath.LastIndexOf("\\"));
+                    //get saving loation
+                    string saveLoc = Path.GetDirectoryName(filePath);
 
                     try
                     {
-                        if (!Directory.Exists(folderPath + "\\dist"))
+                        if (!Directory.Exists(saveLoc + "\\dist"))
                         {
-                            Directory.CreateDirectory(folderPath + "\\dist");
+                            Directory.CreateDirectory(saveLoc + "\\dist");
                         }
                         var doc = new HtmlDocument();
                         var node = HtmlNode.CreateNode(toHTMLfile);
                         doc.DocumentNode.AppendChild(node);
-                        doc.Save(saveLoc + "\\dist" + fileName + ".html");
+                        doc.Save(saveLoc + "\\dist" + "\\" + fileName + ".html");
                     }
                     catch (Exception e)
                     {
