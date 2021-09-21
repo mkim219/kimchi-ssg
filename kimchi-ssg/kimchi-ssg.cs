@@ -1,13 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.CommandLine;
-using System.CommandLine.Invocation;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using HtmlAgilityPack;
-
-
 
 namespace kimchi_ssg
 {
@@ -33,9 +25,13 @@ namespace kimchi_ssg
                 }
 
             }
-            catch(Exception E)
+            catch(FileNotFoundException file)
             {
-                Console.WriteLine("Please Verify Your Token(s)");
+                Console.WriteLine("Could not file the file");
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
             }
         }
 
