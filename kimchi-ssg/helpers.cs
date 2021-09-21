@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 using HtmlAgilityPack;
 
 namespace kimchi_ssg
 {
     public class Helpers
     { 
-        static string HTMLstr = @"<!doctype html>
+        static readonly string HTMLstr = @"<!doctype html>
                                 <html lang = ""en"">
                                 <head>
                                 <meta charset = ""utf-8"">
@@ -21,7 +20,7 @@ namespace kimchi_ssg
                                 </body>
                                 </html>";
 
-        static string style = @"<style>
+        static readonly string style = @"<style>
                                 *{
                                     background-color: #9999FF;
                                  }
@@ -38,8 +37,10 @@ namespace kimchi_ssg
                                   }
                                </style>";
 
+
         static string generateHTMLStr(string[] source, string[] elements, string title)
         {
+
             List<string> toHtml = new List<string>();
             int count = 0;
             foreach (var x in source)
@@ -60,28 +61,28 @@ namespace kimchi_ssg
                     toHtml.Add(style);
                 }
 
-
                 if (x.Contains("<body>"))
                 {
                     toHtml.Add("<div>");
-                    foreach (var s in elements)
-                    {
-
-                        if (count == 0)
+                    
+                        foreach (var s in elements)
                         {
-                            toHtml.Add("<h1>");
-                            toHtml.Add(s);
-                            toHtml.Add("</h1>");
-                        }
-                        else
-                        {
-                            toHtml.Add("<p>");
-                            toHtml.Add(s);
-                            toHtml.Add("</p>");
-                        }
 
-                        count++;
-                    }
+                            if (count == 0)
+                            {
+                                toHtml.Add("<h1>");
+                                toHtml.Add(s);
+                                toHtml.Add("</h1>");
+                            }
+                            else
+                            {
+                                toHtml.Add("<p>");
+                                toHtml.Add(s);
+                                toHtml.Add("</p>");
+                            }
+
+                            count++;
+                        }
                     toHtml.Add("</div>");
 
                 }
@@ -91,6 +92,26 @@ namespace kimchi_ssg
             return toHTMLfile;
         }
 
+        public static void generateHTMLfile(string html, string txtDir, string fileName)
+        {
+            try
+            {
+                if (!Directory.Exists(txtDir + "\\dist"))
+                {
+                    Directory.CreateDirectory(txtDir + "\\dist");
+                }
+
+                var doc = new HtmlDocument();
+                var node = HtmlNode.CreateNode(html);
+                doc.DocumentNode.AppendChild(node);
+                doc.Save(txtDir + "\\dist" + "\\" + fileName + ".html");
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
 
         public static void strToFile(string s)
         {
@@ -99,7 +120,6 @@ namespace kimchi_ssg
             string textPath = Path.GetFullPath(s);
 
             string txtDirectory = Path.GetDirectoryName(textPath);
-            Console.WriteLine("hello");
 
             if (Directory.Exists(txtDirectory + "\\dist"))
             {
@@ -116,23 +136,7 @@ namespace kimchi_ssg
                 string[] contents = text.Split("\n\n");
                 toHTMLfile = generateHTMLStr(html, contents, fileName);
 
-                try
-                {
-                    if (!Directory.Exists(txtDirectory + "\\dist"))
-                    {
-                        Directory.CreateDirectory(txtDirectory + "\\dist");
-                    }
-
-                    var doc = new HtmlDocument();
-                    var node = HtmlNode.CreateNode(toHTMLfile);
-                    doc.DocumentNode.AppendChild(node);
-                    doc.Save(txtDirectory + "\\dist" + "\\" + fileName + ".html");
-
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                }
+                generateHTMLfile(toHTMLfile, txtDirectory, fileName);
             }
             else // Case user input the folder path
             {
@@ -154,31 +158,19 @@ namespace kimchi_ssg
                     List<string> pathSplit = filePath.Split("\\").ToList();
                     //get title 
                     string fileName = Path.GetFileNameWithoutExtension(filePath);
-                    Console.WriteLine(fileName);
+                   
                     toHTMLfile = generateHTMLStr(html, contents, fileName);
 
                     //get saving loation
                     string saveLoc = Path.GetDirectoryName(filePath);
 
-                    try
-                    {
-                        if (!Directory.Exists(saveLoc + "\\dist"))
-                        {
-                            Directory.CreateDirectory(saveLoc + "\\dist");
-                        }
-                        var doc = new HtmlDocument();
-                        var node = HtmlNode.CreateNode(toHTMLfile);
-                        doc.DocumentNode.AppendChild(node);
-                        doc.Save(saveLoc + "\\dist" + "\\" + fileName + ".html");
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e);
-                    }
+                    generateHTMLfile(toHTMLfile, saveLoc, fileName);
+
                 }
             }
 
         }
+
         public static string getOptions()
         {
             return @"
