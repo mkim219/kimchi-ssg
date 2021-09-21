@@ -5,7 +5,6 @@ Static Site Generator Open Source Development
 ## Built with
 - C#
 - .NET 5.0
-- [command-line-api](https://github.com/dotnet/command-line-api)
 - [Html Agility Pack](https://html-agility-pack.net/) 
 
 ## Installation
