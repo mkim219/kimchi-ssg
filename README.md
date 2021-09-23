@@ -27,9 +27,11 @@ Static Site Generator Open Source Development
 
 ## Option
 
-- `--i --input <arguments>` Input your text file to convert html
+- `--i --input <arguments>` Input your text and markdown file to convert html, both file and folder is supported.
 - `--version` Show version information
 - `-?, -h, --help` Show help and usage information
+
+
 
 ## Author
 [Minsu Kim](https://github.com/mkim219)
