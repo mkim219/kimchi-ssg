@@ -29,3 +29,4 @@ C:\Users\suhhe\Documents\git\kimchi-ssg\kimchi-ssg\obj\Release\net5.0\kimchi-ssg
 C:\Users\suhhe\Documents\git\kimchi-ssg\kimchi-ssg\obj\Release\net5.0\ref\kimchi-ssg.dll
 C:\Users\suhhe\Documents\git\kimchi-ssg\kimchi-ssg\obj\Release\net5.0\kimchi-ssg.pdb
 C:\Users\suhhe\Documents\git\kimchi-ssg\kimchi-ssg\obj\Release\net5.0\kimchi-ssg.genruntimeconfig.cache
+C:\Users\suhhe\Documents\git\kimchi-ssg\kimchi-ssg\obj\Release\net5.0\kimchi-ssg.csprojAssemblyReference.cache

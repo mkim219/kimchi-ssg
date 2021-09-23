@@ -45,9 +45,9 @@ namespace kimchi_ssg
                     RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.Compiled);
             var anchor = new Regex(@"\[([^]]*)\]\(([^\s^\)]*)[\s\)]",
                     RegexOptions.Singleline | RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled);
-            var head1 = new Regex(@"(^\#) (.*)",
+            var h1 = new Regex(@"(^\#) (.*)",
                     RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled);
-            var head2 = new Regex(@"(\#\#) (.*)",
+            var h2 = new Regex(@"(\#\#) (.*)",
                     RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.Compiled);
             //suhhee_lab02
             List<string> toHtml = new List<string>();
@@ -105,10 +105,10 @@ namespace kimchi_ssg
                             var toBold = bold.Replace(line, @"<b>$2</b>");
                             var toItalic = italic.Replace(toBold, @"<b>$2</b>");
                             var toAnchor = anchor.Replace(toItalic, @"<a href='$1'>$2</a>");
-                            var toHead2 = head2.Replace(toAnchor, @"<h2>$2</h2></br>");
-                            var toHead1 = head1.Replace(toHead2, @"<h1>$2</h1>");
+                            var toH2 = h2.Replace(toAnchor, @"<h2>$2</h2></br>");
+                            var toH1 = h1.Replace(toH2, @"<h1>$2</h1>");
 
-                            toHtml.Add(toHead1);
+                            toHtml.Add(toH1);
                         }
                     }
                     //suhhee_lab02
@@ -170,8 +170,8 @@ namespace kimchi_ssg
 
                 generateHTMLfile(toHTMLfile, txtDirectory, fileName);
             }
-            //suhhee_lab02 - edited to get md files in folder
-            else if (Path.GetExtension(textPath) == ".md") // case user input md file
+            //suhhee_lab02 - edited to get md files 
+            else if (Path.GetExtension(textPath) == ".md") 
             {
                 var contents = File.ReadAllLines(textPath);
                 string fileName = Path.GetFileNameWithoutExtension(textPath);
@@ -186,7 +186,7 @@ namespace kimchi_ssg
 
 
             //suhhee_lab02 - edited to get md files in folder
-            else // Case user input the folder path
+            else 
             {
 
                 List<string> txtList = new List<string>();
