@@ -258,19 +258,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\MinsuKim\\.nuget\\packages\\": {}
+    "C:\\Users\\suhhe\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\MinsuKim\\Desktop\\Seneca=nw\\OSD600\\Release0.1\\kimchi-ssg\\kimchi-ssg\\kimchi-ssg.csproj",
+      "projectUniqueName": "C:\\Users\\suhhe\\Documents\\git\\kimchi-ssg\\kimchi-ssg\\kimchi-ssg.csproj",
       "projectName": "kimchi-ssg",
-      "projectPath": "C:\\Users\\MinsuKim\\Desktop\\Seneca=nw\\OSD600\\Release0.1\\kimchi-ssg\\kimchi-ssg\\kimchi-ssg.csproj",
-      "packagesPath": "C:\\Users\\MinsuKim\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\MinsuKim\\Desktop\\Seneca=nw\\OSD600\\Release0.1\\kimchi-ssg\\kimchi-ssg\\obj\\",
+      "projectPath": "C:\\Users\\suhhe\\Documents\\git\\kimchi-ssg\\kimchi-ssg\\kimchi-ssg.csproj",
+      "packagesPath": "C:\\Users\\suhhe\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\suhhe\\Documents\\git\\kimchi-ssg\\kimchi-ssg\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\MinsuKim\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\suhhe\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -320,7 +320,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.400\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.401\\RuntimeIdentifierGraph.json"
       }
     }
   }
