@@ -1,4 +1,0 @@
-*/kimchi-ssg/bin/Debug/
-*/kimchi-ssg/bin/Release/
-*/kimchi-ssg/obj/Debug/
-*/kimchi-ssg/obj/Release/
