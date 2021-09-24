@@ -1,2 +1,2 @@
-kimchi-ssg/obj/
-kimchi-ssg/bin/
+obj/
+bin/
