@@ -25,7 +25,7 @@ namespace kimchi_ssg
                                     background-color: #9999FF;
                                  }
                                 div { 
-                                      color: #FFF;
+                                      color: #999;
                                       position: absolute;
                                       width: 700px;
                                       height: -100px;
