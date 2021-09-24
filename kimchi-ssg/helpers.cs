@@ -146,7 +146,10 @@ namespace kimchi_ssg
         {
             string[] html = HTMLstr.Split("\n");
 
-            string textPath = Path.GetFullPath(s);
+
+            string sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string sFile = System.IO.Path.Combine(sCurrentDirectory, @"..");
+            string textPath = Path.GetFullPath(sFile);
 
             string txtDirectory = Path.GetDirectoryName(textPath);
 
