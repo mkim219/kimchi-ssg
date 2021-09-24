@@ -8,7 +8,7 @@ using HtmlAgilityPack;
 namespace kimchi_ssg
 {
     public class Helpers
-    { 
+    {
         static readonly string HTMLstr = @"<!doctype html>
                                 <html lang = ""en"">
                                 <head>
@@ -36,11 +36,20 @@ namespace kimchi_ssg
                                       margin: auto;
                                   }
                                </style>";
-
-
-        static string generateHTMLStr(string[] source, string[] elements, string title)
+        static string generateHTMLStr(string[] source, string[] elements, string title, string extension)
         {
-
+            //Suhhee_lab02-Add regular expression for markdown files
+            var bold = new Regex(@"(\*\*|__) (?=\S) (.+?[*_]*) (?<=\S) \1",
+                    RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.Compiled);
+            var italic = new Regex(@"(\*|_) (?=\S) (.+?) (?<=\S) \1",
+                    RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.Compiled);
+            var anchor = new Regex(@"\[([^]]*)\]\(([^\s^\)]*)[\s\)]",
+                    RegexOptions.Singleline | RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled);
+            var h1 = new Regex(@"(^\#) (.*)",
+                    RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled);
+            var h2 = new Regex(@"(\#\#) (.*)",
+                    RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.Compiled);
+            //suhhee_lab02
             List<string> toHtml = new List<string>();
             int count = 0;
             foreach (var x in source)
@@ -61,10 +70,14 @@ namespace kimchi_ssg
                     toHtml.Add(style);
                 }
 
+
                 if (x.Contains("<body>"))
                 {
                     toHtml.Add("<div>");
-                    
+                    //suhhee_lab02 - add to distinguish function for txt files and md files
+                    if (extension == ".txt")
+                    ///suhhee_lab02
+                    {
                         foreach (var s in elements)
                         {
 
@@ -83,6 +96,22 @@ namespace kimchi_ssg
 
                             count++;
                         }
+                    }
+                    //suhhee_lab02 - add to distinguish function for txt files and md files
+                    else if (extension == ".md")
+                    {
+                        foreach (var line in elements)
+                        {//suhhee_lab02 - replace to html tags
+                            var toBold = bold.Replace(line, @"<b>$2</b><br/>");
+                            var toItalic = italic.Replace(toBold, @"<i>$2</i><br/>");
+                            var toAnchor = anchor.Replace(toItalic, @"<a href='$1'>$2</a>");
+                            var toH2 = h2.Replace(toAnchor, @"<h2>$2</h2></br>");
+                            var toH1 = h1.Replace(toH2, @"<h1>$2</h1>");
+
+                            toHtml.Add(toH1);
+                        }
+                    }
+                    //suhhee_lab02
                     toHtml.Add("</div>");
 
                 }
@@ -92,19 +121,20 @@ namespace kimchi_ssg
             return toHTMLfile;
         }
 
-        public static void generateHTMLfile(string html, string txtDir, string fileName)
+        public static void generateHTMLfile(string html, string txtDir, string fileName)//
         {
             try
             {
-                if (!Directory.Exists(txtDir + "\\dist"))
+                if (!Directory.Exists(txtDir))
                 {
-                    Directory.CreateDirectory(txtDir + "\\dist");
+                    Directory.CreateDirectory(txtDir);
+                   
                 }
-
+                
                 var doc = new HtmlDocument();
                 var node = HtmlNode.CreateNode(html);
                 doc.DocumentNode.AppendChild(node);
-                doc.Save(txtDir + "\\dist" + "\\" + fileName + ".html");
+                doc.Save(txtDir + "\\" + fileName + ".html");
 
             }
             catch (Exception e)
@@ -115,56 +145,98 @@ namespace kimchi_ssg
 
         public static void strToFile(string s)
         {
+            //suhhee_lab02 - create HTML files in dist folder in main directory
             string[] html = HTMLstr.Split("\n");
-
-            string textPath = Path.GetFullPath(s);
+            string sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string sFile = System.IO.Path.Combine(sCurrentDirectory, @"..\\net5.0");
+            string textPath = Path.GetFullPath(sFile);
 
             string txtDirectory = Path.GetDirectoryName(textPath);
+            //suhhee_lab02
 
-            if (Directory.Exists(txtDirectory + "\\dist"))
+
+
+            if (Directory.Exists(txtDirectory+ "\\net5.0\\dist"))
             {
-                Directory.Delete(txtDirectory + "\\dist", true);
-                Console.WriteLine("The dist folder has been deleted");
+                Directory.Delete(txtDirectory + "\\net5.0\\dist", true);
+                
+             
             }
-
+            Directory.CreateDirectory(txtDirectory + "\\net5.0\\dist");
+           
             string toHTMLfile = string.Empty;
-            if (textPath.Contains(".txt"))
+            if (Path.GetExtension(s) == ".txt")
             {
-                var text = File.ReadAllText(textPath);
-                string fileName = Path.GetFileNameWithoutExtension(textPath);
+                var text = File.ReadAllText(txtDirectory + "\\net5.0\\"+ s);
+                string fileName = Path.GetFileNameWithoutExtension(txtDirectory + "\\net5.0\\"+s);
+                string extension = Path.GetExtension(txtDirectory + "\\net5.0\\"+s);
 
                 string[] contents = text.Split("\n\n");
-                toHTMLfile = generateHTMLStr(html, contents, fileName);
+                toHTMLfile = generateHTMLStr(html, contents, fileName, extension);
 
-                generateHTMLfile(toHTMLfile, txtDirectory, fileName);
+                generateHTMLfile(toHTMLfile, txtDirectory + "\\net5.0\\dist", fileName);
             }
-            else // Case user input the folder path
+            //suhhee_lab02 - edited to get md files 
+            else if (Path.GetExtension(s) == ".md") 
+            {
+               
+                var contents = File.ReadAllLines(txtDirectory + "\\net5.0\\"+s);
+
+                string fileName = Path.GetFileNameWithoutExtension(s);
+                string extension = Path.GetExtension(s);
+               
+                toHTMLfile = generateHTMLStr(html, contents, fileName, extension);
+
+                generateHTMLfile(toHTMLfile, txtDirectory + "\\net5.0\\dist", fileName);
+
+            }
+            // suhhee_lab02
+
+
+            //suhhee_lab02 - edited to get md files in folder
+            else 
             {
 
                 List<string> txtList = new List<string>();
-                DirectoryInfo di = new DirectoryInfo(txtDirectory);
+                DirectoryInfo di = new DirectoryInfo(txtDirectory + "\\net5.0\\"+s);
 
-                foreach (var dir in di.EnumerateFiles("*", SearchOption.AllDirectories).Where(x => x.ToString().EndsWith(".txt")))
+            
+                //suhhee_lab02 - added md file extension
+                foreach (var dir in di.EnumerateFiles().Where(x => x.ToString().EndsWith(".txt") || x.ToString().EndsWith(".md")))
+                //suhhee_lab02
                 {
+                    
                     txtList.Add(dir.ToString());
+                   
                 }
-
+                
                 foreach (var filePath in txtList)
                 {
                     // read the text's paragrah 
-                    var text = File.ReadAllText(filePath);
-                    string[] contents = text.Split("\n\n");
+                    string extension = Path.GetExtension(filePath);
+                    string[] contents;
+                    //suhhee_lab02 - add to read md files
+                    if (extension == ".md")
+                    {
+                        contents = File.ReadAllLines(filePath);
+                    }
+                    else
+                    {
+                        contents = File.ReadAllText(filePath).Split("\n\n");
+                    }
+                    //suhhee_lab02
 
                     List<string> pathSplit = filePath.Split("\\").ToList();
                     //get title 
                     string fileName = Path.GetFileNameWithoutExtension(filePath);
-                   
-                    toHTMLfile = generateHTMLStr(html, contents, fileName);
+
+
+                    toHTMLfile = generateHTMLStr(html, contents, fileName, extension);
 
                     //get saving loation
-                    string saveLoc = Path.GetDirectoryName(filePath);
+                    string saveLoc = Path.GetDirectoryName(filePath); /////
 
-                    generateHTMLfile(toHTMLfile, saveLoc, fileName);
+                    generateHTMLfile(toHTMLfile, txtDirectory + "\\net5.0\\dist", fileName);
 
                 }
             }
@@ -185,6 +257,6 @@ namespace kimchi_ssg
             return "Current Version: 1.0.0";
         }
 
-        
+
     }
 }
