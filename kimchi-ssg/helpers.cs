@@ -102,8 +102,8 @@ namespace kimchi_ssg
                     {
                         foreach (var line in elements)
                         {//suhhee_lab02 - replace to html tags
-                            var toBold = bold.Replace(line, @"<b>$2</b>");
-                            var toItalic = italic.Replace(toBold, @"<b>$2</b>");
+                            var toBold = bold.Replace(line, @"<b>$2</b><br/>");
+                            var toItalic = italic.Replace(toBold, @"<i>$2</i><br/>");
                             var toAnchor = anchor.Replace(toItalic, @"<a href='$1'>$2</a>");
                             var toH2 = h2.Replace(toAnchor, @"<h2>$2</h2></br>");
                             var toH1 = h1.Replace(toH2, @"<h1>$2</h1>");
