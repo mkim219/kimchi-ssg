@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,8 +9,9 @@ namespace kimchi_ssg
 {
     public class Helpers
     {
-        static readonly string HTMLstr = @"<!doctype html>
-                                <html lang = ""en"">
+
+        static readonly string HTMLstr = @"
+                                <html lang=""en-CA"">
                                 <head>
                                 <meta charset = ""utf-8"">
                                 <title> Filename </title>
@@ -54,7 +55,6 @@ namespace kimchi_ssg
             int count = 0;
             foreach (var x in source)
             {
-
                 if (x.Contains("Filename"))
                 {
                     string temp = x.Replace("Filename", title);
@@ -117,7 +117,8 @@ namespace kimchi_ssg
                 }
 
             }
-            string toHTMLfile = string.Join(" ", toHtml);
+
+            string toHTMLfile = string.Join("\n", toHtml);
             return toHTMLfile;
         }
 
@@ -130,9 +131,13 @@ namespace kimchi_ssg
                     Directory.CreateDirectory(txtDir);
                    
                 }
-                
                 var doc = new HtmlDocument();
+                HtmlCommentNode hcn = doc.CreateComment("<!doctype html>");
+  
+
                 var node = HtmlNode.CreateNode(html);
+
+                doc.DocumentNode.AppendChild(hcn);
                 doc.DocumentNode.AppendChild(node);
                 doc.Save(txtDir + "\\" + fileName + ".html");
 
@@ -148,7 +153,7 @@ namespace kimchi_ssg
             //suhhee_lab02 - create HTML files in dist folder in main directory
             string[] html = HTMLstr.Split("\n");
             string sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            string sFile = System.IO.Path.Combine(sCurrentDirectory, @"..\\net5.0");
+            string sFile = Path.Combine(sCurrentDirectory, @"..\\net5.0");
             string textPath = Path.GetFullPath(sFile);
 
             string txtDirectory = Path.GetDirectoryName(textPath);
@@ -246,9 +251,9 @@ namespace kimchi_ssg
         public static string getOptions()
         {
             return @"
-                --i or -input<text file> : Input your text file to convert html, if the text file has space, you should use double-quote
-                --h or -help: Show the options
-                --v or -version: show current version
+                -i or --input<text file> : Input your text file to convert html, if the text file has space, you should use double-quote
+                -h or --help: Show the options
+                -v or --version: show current version
             ";
         }
 
