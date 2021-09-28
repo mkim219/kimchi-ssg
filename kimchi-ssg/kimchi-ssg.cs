@@ -9,17 +9,17 @@ namespace kimchi_ssg
         {
             try
             {
-                if (args[0] == "-input" || args[0] == "--i")
+                if (args[0] == "--input" || args[0] == "-i")
                 {
                     Helpers.strToFile(args[1]);
                 }
 
-                if (args[0] == "-version" || args[0] == "--v")
+                if (args[0] == "--version" || args[0] == "-v")
                 {
                     Console.WriteLine(Helpers.getVersion());
                 }
 
-                if (args[0] == "-help" || args[0] == "-help")
+                if (args[0] == "--help" || args[0] == "-h")
                 {
                     Console.WriteLine(Helpers.getOptions());
                 }
@@ -27,7 +27,7 @@ namespace kimchi_ssg
             }
             catch(FileNotFoundException file)
             {
-                Console.WriteLine("Could not file the file");
+                Console.WriteLine("Could not find the file");
             }
             catch(Exception e)
             {
