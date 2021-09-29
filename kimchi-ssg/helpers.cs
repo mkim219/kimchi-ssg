@@ -50,6 +50,8 @@ namespace kimchi_ssg
                     RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled);
             var h2 = new Regex(@"(\#\#) (.*)",
                     RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.Compiled);
+            var hr = new Regex(@"(\---) (.*)",
+                    RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.Compiled);
             //suhhee_lab02
             List<string> toHtml = new List<string>();
             int count = 0;
@@ -107,8 +109,9 @@ namespace kimchi_ssg
                             var toAnchor = anchor.Replace(toItalic, @"<a href='$1'>$2</a>");
                             var toH2 = h2.Replace(toAnchor, @"<h2>$2</h2></br>");
                             var toH1 = h1.Replace(toH2, @"<h1>$2</h1>");
+                            var toHr = hr.Replace(toH1, @"<hr>");
 
-                            toHtml.Add(toH1);
+                            toHtml.Add(toHr);
                         }
                     }
                     //suhhee_lab02
