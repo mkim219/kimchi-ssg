@@ -15,6 +15,11 @@ Static Site Generator Open Source Development
 4.  Type command `dotnet tool install --global --add-source {your project directory including kimchi-ssg.1.0.0.nupkg} kimchi-ssg` 
 5.  Check installation `dotnet tool list --global`
 
+## Publish
+
+[Linux]   dotnet publish -r linux-x64 -p:PublishSingleFile=true --self-contained false
+[Windows] dotnet publish -r win-x64
+
 ## Without Installation
 
 1.  Clone [repository](https://github.com/mkim219/kimchi-ssg) 

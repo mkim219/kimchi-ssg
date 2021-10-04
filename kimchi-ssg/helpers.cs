@@ -4,12 +4,16 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using HtmlAgilityPack;
+using System.Text.Json;
+using System.Runtime.InteropServices;//check os
+
 
 namespace kimchi_ssg
 {
+
     public class Helpers
     {
-
+        
         static readonly string HTMLstr = @"
                                 <html lang=""en-CA"">
                                 <head>
@@ -130,6 +134,60 @@ namespace kimchi_ssg
             return toHTMLfile;
         }
 
+        // parse the json file getting all valid arguments
+        public static void parseJSON(string jsonstring, string extension, string pout)
+        {
+            string[] builtString = new string[4]{"","","",""};
+            bool valid = false;
+            if (extension == ".json")
+            ///eugene_lab04
+            {   var dict = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonstring);
+                
+                if(String.IsNullOrEmpty(jsonstring))
+                {
+                    valid = true; // case with {} json
+                    builtString[0] = "-v";
+                }else{
+                    
+                    if (dict.ContainsKey("input"))
+                    {
+                        builtString[0] = "--input" ;
+                        builtString[1] = dict["input"];
+                        valid = true;
+                    }
+                    else if (dict.ContainsKey("i"))
+                    {
+                        builtString[0] = "-i" ;
+                        builtString[1] = dict["i"];
+                        valid = true;
+                    }
+                    else if (dict.ContainsKey("output"))
+                    {
+                        builtString[2] = "--output ";
+                        builtString[3]  = dict["output"];
+                    }      
+                    
+                }
+                if (valid)
+                {
+                    if (dict.ContainsKey("output"))
+                    {
+                        strToFile(builtString[1], builtString[3]);
+                    }
+                    else
+                    {
+                        strToFile(builtString[1], pout);
+                    }
+                    
+                }
+                else
+                {
+                    Console.WriteLine("Invalid json file contents");
+                }     
+            }
+            
+        }
+
         public static void generateHTMLfile(string html, string txtDir, string fileName)//
         {
             try
@@ -147,8 +205,12 @@ namespace kimchi_ssg
 
                 doc.DocumentNode.AppendChild(hcn);
                 doc.DocumentNode.AppendChild(node);
-                doc.Save(txtDir + "\\" + fileName + ".html");
-
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)){
+                    doc.Save(txtDir + "/" + fileName + ".html");    
+                }else{ //Windows
+                    doc.Save(txtDir + "\\" + fileName + ".html");
+                }
+                
             }
             catch (Exception e)
             {
@@ -156,104 +218,128 @@ namespace kimchi_ssg
             }
         }
 
-        public static void strToFile(string s)
+        public static void testJSONFirst(string s, string pout)
+        {
+            //eugene_lab04 - edited to get json file
+            string sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string filePath = Path.GetFullPath(sCurrentDirectory);
+            string fileDirectory = Path.GetDirectoryName(filePath);
+
+            if (Path.GetExtension(s) == ".json")
+            {
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    var contents = File.ReadAllText(fileDirectory +"/"+s);
+                    string extension = Path.GetExtension(s);
+                    parseJSON(contents, extension, pout);
+                } else {
+                    var contents = File.ReadAllText(fileDirectory +"\\"+s);
+                    string extension = Path.GetExtension(s);
+                    parseJSON(contents, extension, pout);
+                }
+            } else {
+                
+                strToFile(s, pout);
+            }
+        }
+        public static void strToFile(string s, string output)
         {
             //suhhee_lab02 - create HTML files in dist folder in main directory
             string[] html = HTMLstr.Split("\n");
             string sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            string sFile = Path.Combine(sCurrentDirectory, @"..\\net5.0");
+            string sFile = sCurrentDirectory;//Path.Combine(sCurrentDirectory, "../"); //..\\net5.0
             string textPath = Path.GetFullPath(sFile);
 
             string txtDirectory = Path.GetDirectoryName(textPath);
             //suhhee_lab02
 
-
-
-            if (Directory.Exists(txtDirectory+ "\\net5.0\\dist"))
+            string substr = "\\";
+             //\\net5.0\\ removed to work for linux
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                Directory.Delete(txtDirectory + "\\net5.0\\dist", true);
-                
-             
+                substr = "/";
             }
-            Directory.CreateDirectory(txtDirectory + "\\net5.0\\dist");
-           
+            if (Directory.Exists(txtDirectory+ substr + output))
+            {
+                Directory.Delete(txtDirectory + substr + output, true);         
+            }
+            Directory.CreateDirectory(txtDirectory + substr + output);
+               
             string toHTMLfile = string.Empty;
             if (Path.GetExtension(s) == ".txt")
             {
-                var text = File.ReadAllText(txtDirectory + "\\net5.0\\"+ s);
-                string fileName = Path.GetFileNameWithoutExtension(txtDirectory + "\\net5.0\\"+s);
-                string extension = Path.GetExtension(txtDirectory + "\\net5.0\\"+s);
+                var text = File.ReadAllText(txtDirectory + s); //removed \\dotnet5.0\\ to work for linux
+                string fileName = Path.GetFileNameWithoutExtension(txtDirectory+s); // + "\\net5.0\\"
+                string extension = Path.GetExtension(txtDirectory +s); //+ "\\net5.0\\"
 
                 string[] contents = text.Split("\n\n");
                 toHTMLfile = generateHTMLStr(html, contents, fileName, extension);
-
-                generateHTMLfile(toHTMLfile, txtDirectory + "\\net5.0\\dist", fileName);
+                generateHTMLfile(toHTMLfile, txtDirectory + substr + output + substr, fileName);
             }
             //suhhee_lab02 - edited to get md files 
             else if (Path.GetExtension(s) == ".md") 
             {
-               
-                var contents = File.ReadAllLines(txtDirectory + "\\net5.0\\"+s);
+                
+                var contents = File.ReadAllLines(txtDirectory+substr+s); //+ "\\net5.0\\"
 
                 string fileName = Path.GetFileNameWithoutExtension(s);
                 string extension = Path.GetExtension(s);
-               
+                   
                 toHTMLfile = generateHTMLStr(html, contents, fileName, extension);
 
-                generateHTMLfile(toHTMLfile, txtDirectory + "\\net5.0\\dist", fileName);
-
-            }
-            // suhhee_lab02
-
-
-            //suhhee_lab02 - edited to get md files in folder
-            else 
-            {
-
-                List<string> txtList = new List<string>();
-                DirectoryInfo di = new DirectoryInfo(txtDirectory + "\\net5.0\\"+s);
-
-            
-                //suhhee_lab02 - added md file extension
-                foreach (var dir in di.EnumerateFiles().Where(x => x.ToString().EndsWith(".txt") || x.ToString().EndsWith(".md")))
-                //suhhee_lab02
-                {
-                    
-                    txtList.Add(dir.ToString());
-                   
-                }
+                generateHTMLfile(toHTMLfile, txtDirectory + substr+output+substr, fileName); //\\net5.0\\
                 
-                foreach (var filePath in txtList)
-                {
-                    // read the text's paragrah 
-                    string extension = Path.GetExtension(filePath);
-                    string[] contents;
-                    //suhhee_lab02 - add to read md files
-                    if (extension == ".md")
-                    {
-                        contents = File.ReadAllLines(filePath);
-                    }
-                    else
-                    {
-                        contents = File.ReadAllText(filePath).Split("\n\n");
-                    }
-                    //suhhee_lab02
 
-                    List<string> pathSplit = filePath.Split("\\").ToList();
-                    //get title 
-                    string fileName = Path.GetFileNameWithoutExtension(filePath);
-
-
-                    toHTMLfile = generateHTMLStr(html, contents, fileName, extension);
-
-                    //get saving loation
-                    string saveLoc = Path.GetDirectoryName(filePath); /////
-
-                    generateHTMLfile(toHTMLfile, txtDirectory + "\\net5.0\\dist", fileName);
-
-                }
             }
+            
+            
 
+            // suhhee_lab02
+            //suhhee_lab02 - edited to get md files in folder
+
+            List<string> txtList = new List<string>();
+            DirectoryInfo di;
+            di = new DirectoryInfo(txtDirectory+ substr +s); // + "\\net5.0\\"
+            
+            //suhhee_lab02 - added md file extension
+            foreach (var dir in di.EnumerateFiles().Where(x => x.ToString().EndsWith(".txt") || x.ToString().EndsWith(".md")))
+            //suhhee_lab02
+            {
+                    
+                txtList.Add(dir.ToString());
+                   
+            }
+                
+            foreach (var filePath in txtList)
+            {
+                // read the text's paragrah 
+                string extension = Path.GetExtension(filePath);
+                string[] contents;
+                //suhhee_lab02 - add to read md files
+                if (extension == ".md")
+                {
+                    contents = File.ReadAllLines(filePath);
+                }
+                else
+                {
+                    contents = File.ReadAllText(filePath).Split("\n\n");
+                }
+                //suhhee_lab02
+
+                List<string> pathSplit = filePath.Split("\\").ToList();
+                //get title 
+                string fileName = Path.GetFileNameWithoutExtension(filePath);
+
+
+                toHTMLfile = generateHTMLStr(html, contents, fileName, extension);
+
+                //get saving loation
+                string saveLoc = Path.GetDirectoryName(filePath); /////
+
+                generateHTMLfile(toHTMLfile, txtDirectory + substr + output + substr, fileName); //\\net5.0\\
+
+            }
+            
         }
 
         public static string getOptions()

@@ -7,23 +7,41 @@ namespace kimchi_ssg
     {
         static void Main(string[] args)
         {
+            
             try
             {
-                if (args[0] == "--input" || args[0] == "-i")
-                {
-                    Helpers.strToFile(args[1]);
+                if (args == null || args.Length == 0){
+                    Console.WriteLine("Error: No arguments");
                 }
-
-                if (args[0] == "--version" || args[0] == "-v")
+                else if(args[0] == "--config" || args[0] == "-c")
                 {
-                    Console.WriteLine(Helpers.getVersion());
+                    Helpers.testJSONFirst(args[1], "dist");
                 }
-
-                if (args[0] == "--help" || args[0] == "-h")
+                else
                 {
-                    Console.WriteLine(Helpers.getOptions());
-                }
+                    if (args[0] == "--input" || args[0] == "-i")
+                    {
+                        if (args.Length == 4 && args[2] == "--output")
+                        {
+                            Helpers.testJSONFirst(args[1], args[3]);
+                        }
+                        else
+                        {
+                            Helpers.testJSONFirst(args[1], "dist");
+                        }
+                        
+                    }
 
+                    if (args[0] == "--version" || args[0] == "-v")
+                    {
+                        Console.WriteLine(Helpers.getVersion());
+                    }
+
+                    if (args[0] == "--help" || args[0] == "-h")
+                    {
+                        Console.WriteLine(Helpers.getOptions());
+                    }
+                }
             }
             catch(FileNotFoundException file)
             {
@@ -34,6 +52,5 @@ namespace kimchi_ssg
                 Console.WriteLine(e);
             }
         }
-
     }
 }
