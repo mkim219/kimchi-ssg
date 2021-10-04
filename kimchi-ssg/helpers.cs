@@ -85,7 +85,6 @@ namespace kimchi_ssg
                     toHtml.Add("<div>");
                     //suhhee_lab02 - add to distinguish function for txt files and md files
                     if (extension == ".txt")
-                    ///suhhee_lab02
                     {
                         foreach (var s in elements)
                         {
@@ -102,11 +101,9 @@ namespace kimchi_ssg
                                 toHtml.Add(s);
                                 toHtml.Add("</p>");
                             }
-
                             count++;
                         }
-                    }
-                    //suhhee_lab02 - add to distinguish function for txt files and md files
+                    }//suhhee_lab02 - add to distinguish function for txt files and md files
                     else if (extension == ".md")
                     {
                         foreach (var line in elements)
@@ -143,7 +140,7 @@ namespace kimchi_ssg
             ///eugene_lab04
             {   var dict = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonstring);
                 
-                if(String.IsNullOrEmpty(jsonstring))
+				if(dict.ContainsKey("") || jsonstring == "{}")
                 {
                     valid = true; // case with {} json
                     builtString[0] = "-v";
@@ -165,6 +162,7 @@ namespace kimchi_ssg
                     {
                         builtString[2] = "--output ";
                         builtString[3]  = dict["output"];
+						pout = dict["output"];
                     }      
                     
                 }
@@ -172,7 +170,7 @@ namespace kimchi_ssg
                 {
                     if (dict.ContainsKey("output"))
                     {
-                        strToFile(builtString[1], builtString[3]);
+						strToFile(builtString[1], builtString[3]);
                     }
                     else
                     {
@@ -224,19 +222,16 @@ namespace kimchi_ssg
             string sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
             string filePath = Path.GetFullPath(sCurrentDirectory);
             string fileDirectory = Path.GetDirectoryName(filePath);
-
+			string substr = "\\";
             if (Path.GetExtension(s) == ".json")
             {
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                 {
-                    var contents = File.ReadAllText(fileDirectory +"/"+s);
-                    string extension = Path.GetExtension(s);
-                    parseJSON(contents, extension, pout);
-                } else {
-                    var contents = File.ReadAllText(fileDirectory +"\\"+s);
-                    string extension = Path.GetExtension(s);
-                    parseJSON(contents, extension, pout);
+                    substr = "/";
                 }
+                var contents = File.ReadAllText(fileDirectory +substr+ s);
+                string extension = Path.GetExtension(s);
+                parseJSON(contents, extension, pout);
             } else {
                 
                 strToFile(s, pout);
@@ -244,21 +239,28 @@ namespace kimchi_ssg
         }
         public static void strToFile(string s, string output)
         {
-            //suhhee_lab02 - create HTML files in dist folder in main directory
-            string[] html = HTMLstr.Split("\n");
-            string sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            string sFile = sCurrentDirectory;//Path.Combine(sCurrentDirectory, "../"); //..\\net5.0
-            string textPath = Path.GetFullPath(sFile);
-
-            string txtDirectory = Path.GetDirectoryName(textPath);
-            //suhhee_lab02
-
-            string substr = "\\";
+			string substr = "\\";
              //\\net5.0\\ removed to work for linux
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 substr = "/";
             }
+            //suhhee_lab02 - create HTML files in dist folder in main directory
+            string[] html = HTMLstr.Split("\n");
+            string sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string sFile = sCurrentDirectory;//Path.Combine(sCurrentDirectory, substr); //windows can modify to ur usecase
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+			{
+				sFile = sCurrentDirectory;
+			}
+            string textPath = Path.GetFullPath(sFile);
+
+            string txtDirectory = Path.GetDirectoryName(textPath);
+			//added safety check
+			if(output == "" || output == null){
+				output = "dist";
+			}
+            
             if (Directory.Exists(txtDirectory+ substr + output))
             {
                 Directory.Delete(txtDirectory + substr + output, true);         
@@ -268,13 +270,13 @@ namespace kimchi_ssg
             string toHTMLfile = string.Empty;
             if (Path.GetExtension(s) == ".txt")
             {
-                var text = File.ReadAllText(txtDirectory + s); //removed \\dotnet5.0\\ to work for linux
-                string fileName = Path.GetFileNameWithoutExtension(txtDirectory+s); // + "\\net5.0\\"
-                string extension = Path.GetExtension(txtDirectory +s); //+ "\\net5.0\\"
+                var text = File.ReadAllText(txtDirectory + substr + s); //removed "\\net5.0\\"
+                string fileName = Path.GetFileNameWithoutExtension(txtDirectory+ substr +s);
+                string extension = Path.GetExtension(txtDirectory+ substr + s); 
 
                 string[] contents = text.Split("\n\n");
                 toHTMLfile = generateHTMLStr(html, contents, fileName, extension);
-                generateHTMLfile(toHTMLfile, txtDirectory + substr + output + substr, fileName);
+                generateHTMLfile(toHTMLfile, txtDirectory + substr + output, fileName);
             }
             //suhhee_lab02 - edited to get md files 
             else if (Path.GetExtension(s) == ".md") 
@@ -287,57 +289,60 @@ namespace kimchi_ssg
                    
                 toHTMLfile = generateHTMLStr(html, contents, fileName, extension);
 
-                generateHTMLfile(toHTMLfile, txtDirectory + substr+output+substr, fileName); //\\net5.0\\
+                generateHTMLfile(toHTMLfile, txtDirectory + substr+output, fileName); //\\net5.0\\
                 
 
             }
-            
-            
+			else
+			{
+				// suhhee_lab02
+				//suhhee_lab02 - edited to get md files in folder
 
-            // suhhee_lab02
-            //suhhee_lab02 - edited to get md files in folder
+				List<string> txtList = new List<string>();
+                DirectoryInfo di = new DirectoryInfo(txtDirectory + substr +s);
 
-            List<string> txtList = new List<string>();
-            DirectoryInfo di;
-            di = new DirectoryInfo(txtDirectory+ substr +s); // + "\\net5.0\\"
             
-            //suhhee_lab02 - added md file extension
-            foreach (var dir in di.EnumerateFiles().Where(x => x.ToString().EndsWith(".txt") || x.ToString().EndsWith(".md")))
-            //suhhee_lab02
-            {
-                    
-                txtList.Add(dir.ToString());
-                   
-            }
-                
-            foreach (var filePath in txtList)
-            {
-                // read the text's paragrah 
-                string extension = Path.GetExtension(filePath);
-                string[] contents;
-                //suhhee_lab02 - add to read md files
-                if (extension == ".md")
-                {
-                    contents = File.ReadAllLines(filePath);
-                }
-                else
-                {
-                    contents = File.ReadAllText(filePath).Split("\n\n");
-                }
+                //suhhee_lab02 - added md file extension
+                foreach (var dir in di.EnumerateFiles().Where(x => x.ToString().EndsWith(".txt") || x.ToString().EndsWith(".md")))
                 //suhhee_lab02
+                {
+                    
+                    txtList.Add(dir.ToString());
+                   
+                }
+                
+                foreach (var filePath in txtList)
+                {
+                    // read the text's paragrah 
+                    string extension = Path.GetExtension(filePath);
+                    string[] contents;
+                    //suhhee_lab02 - add to read md files
+                    if (extension == ".md")
+                    {
+                        contents = File.ReadAllLines(filePath);
+                    }
+                    else
+                    {
+                        contents = File.ReadAllText(filePath).Split("\n");
+                    }
+                    //suhhee_lab02
 
-                List<string> pathSplit = filePath.Split("\\").ToList();
-                //get title 
-                string fileName = Path.GetFileNameWithoutExtension(filePath);
+                    List<string> pathSplit = filePath.Split("\\").ToList();
+					if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+					{
+						pathSplit = filePath.Split("/").ToList();
+					}
+                    //get title 
+                    string fileName = Path.GetFileNameWithoutExtension(filePath);
 
 
-                toHTMLfile = generateHTMLStr(html, contents, fileName, extension);
+                    toHTMLfile = generateHTMLStr(html, contents, fileName, extension);
 
-                //get saving loation
-                string saveLoc = Path.GetDirectoryName(filePath); /////
+                    //get saving loation
+                    string saveLoc = Path.GetDirectoryName(filePath); /////
 
-                generateHTMLfile(toHTMLfile, txtDirectory + substr + output + substr, fileName); //\\net5.0\\
-
+                    generateHTMLfile(toHTMLfile, savLoc + substr + output, fileName);
+				}
             }
             
         }
@@ -348,6 +353,7 @@ namespace kimchi_ssg
                 -i or --input<text file> : Input your text file to convert html, if the text file has space, you should use double-quote
                 -h or --help: Show the options
                 -v or --version: show current version
+				-c or --config: parse json to run options
             ";
         }
 

@@ -16,19 +16,19 @@ Static Site Generator Open Source Development
 5.  Check installation `dotnet tool list --global`
 
 ## Publish
-
+```
 [Linux]   dotnet publish -r linux-x64 -p:PublishSingleFile=true --self-contained false
-[Windows] dotnet publish -r win-x64
-
+[Windows] dotnet publish -r win-x64 -p:PublishSingleFile=true --self-contained false
+```
 ## Without Installation
-
-1.  Clone [repository](https://github.com/mkim219/kimchi-ssg) 
-2.  Open "kimchi-ssg.csproj" C# project file
-3A. Build the project with ctrl+shift+B (if you Windows user)
-3B. build and publish project with dotnet build, then dotnet publish(Linux User)
-4.  Go to directory "\bin\Release\net5.0", you can find kimchi-ssg.exe or "/bin/Debug/net5.0" for linux
-5.  Run command prompt and change directory where kimchi-ssg.exe (windows) or ./kimichi-ssg (Linux) locates at
-
+```
+1.   Clone [repository](https://github.com/mkim219/kimchi-ssg) 
+2.   Open "kimchi-ssg.csproj" C# project file
+3i.  Build the project with ctrl+shift+B (if you Windows user)
+3ii. Build and publish project with "dotnet build", then "dotnet publish"(Linux User - see Publish section for options)
+4.   Go to directory "\bin\Release\net5.0", you can find kimchi-ssg.exe or "/bin/Debug/net5.0" for linux
+5.   Run command prompt and change directory where kimchi-ssg.exe (windows) or ./kimichi-ssg (Linux) locates at
+```
 
 
 ## Option
@@ -36,6 +36,7 @@ Static Site Generator Open Source Development
 -   `--i --input <arguments>` Input your text file to convert html
 -   `--version` Show version information
 -   `-?, -h, --help` Show help and usage information
+-   `-c, --config <json file>` run with options on json file
 
 ## Author
 [Minsu Kim](https://github.com/mkim219)

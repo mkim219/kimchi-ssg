@@ -23,7 +23,14 @@ namespace kimchi_ssg
                     {
                         if (args.Length == 4 && args[2] == "--output")
                         {
-                            Helpers.testJSONFirst(args[1], args[3]);
+							if(args[3] == "" || args[3] == null)
+							{
+								Helpers.testJSONFirst(args[1], "dist");
+							}
+							else
+							{
+								Helpers.testJSONFirst(args[1], args[3]);
+							}
                         }
                         else
                         {
