@@ -27,7 +27,7 @@ namespace kimchi_ssg
             }
             catch(FileNotFoundException file)
             {
-                Console.WriteLine("Could not find the file");
+                Console.WriteLine("Could not find the file " + file);
             }
             catch(Exception e)
             {
