@@ -341,7 +341,7 @@ namespace kimchi_ssg
                     //get saving loation
                     string saveLoc = Path.GetDirectoryName(filePath); /////
 
-                    generateHTMLfile(toHTMLfile, savLoc + substr + output, fileName);
+                    generateHTMLfile(toHTMLfile, txtDirectory + substr + output, fileName);
 				}
             }
             
