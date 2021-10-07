@@ -170,7 +170,8 @@ namespace kimchi_ssg
                 {
                     if (dict.ContainsKey("output"))
                     {
-						strToFile(builtString[1], builtString[3]);
+						strToFile(builtString[1], dict["output"]);
+						pout = dict["output"];
                     }
                     else
                     {
@@ -260,10 +261,11 @@ namespace kimchi_ssg
 			if(output == "" || output == null){
 				output = "dist";
 			}
-            
+            Console.WriteLine(output);
             if (Directory.Exists(txtDirectory+ substr + output))
             {
-                Directory.Delete(txtDirectory + substr + output, true);         
+				Console.WriteLine("DELTE");
+                //Directory.Delete(txtDirectory + substr + output, true);         
             }
             Directory.CreateDirectory(txtDirectory + substr + output);
                
