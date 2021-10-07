@@ -261,11 +261,10 @@ namespace kimchi_ssg
 			if(output == "" || output == null){
 				output = "dist";
 			}
-            Console.WriteLine(output);
+            
             if (Directory.Exists(txtDirectory+ substr + output))
             {
-				Console.WriteLine("DELTE");
-                //Directory.Delete(txtDirectory + substr + output, true);         
+                Directory.Delete(txtDirectory + substr + output, true);         
             }
             Directory.CreateDirectory(txtDirectory + substr + output);
                
