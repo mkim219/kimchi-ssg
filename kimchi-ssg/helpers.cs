@@ -171,7 +171,8 @@ namespace kimchi_ssg
                 {
                     if (dict.ContainsKey("output"))
                     {
-						strToFile(builtString[1], builtString[3]);
+						strToFile(builtString[1], dict["output"]);
+						pout = dict["output"];
                     }
                     else
                     {
