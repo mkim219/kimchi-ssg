@@ -127,6 +127,7 @@ namespace kimchi_ssg
 
             }
 
+
             string toHTMLfile = string.Join("\n", toHtml);
             return toHTMLfile;
         }
@@ -246,7 +247,11 @@ namespace kimchi_ssg
                 substr = "/";
             }
             //suhhee_lab02 - create HTML files in dist folder in main directory
-            string[] html = HTMLstr.Split("\n");
+            string[] html;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                html = HTMLstr.Split("\n");
+            else
+                html = HTMLstr.Split("\r\n");
             string sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
             string sFile = sCurrentDirectory;//Path.Combine(sCurrentDirectory, substr); //windows can modify to ur usecase
 			if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
@@ -271,10 +276,18 @@ namespace kimchi_ssg
             if (Path.GetExtension(s) == ".txt")
             {
                 var text = File.ReadAllText(txtDirectory + substr + s); //removed "\\net5.0\\"
+                
+
                 string fileName = Path.GetFileNameWithoutExtension(txtDirectory+ substr +s);
                 string extension = Path.GetExtension(txtDirectory+ substr + s); 
 
-                string[] contents = text.Split("\n\n");
+                string[] contents;
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                    contents = text.Split("\n\n");
+                else
+                    contents = text.Split("\r\n\r\n");
+
+
                 toHTMLfile = generateHTMLStr(html, contents, fileName, extension);
                 generateHTMLfile(toHTMLfile, txtDirectory + substr + output, fileName);
             }
@@ -323,7 +336,9 @@ namespace kimchi_ssg
                     }
                     else
                     {
-                        contents = File.ReadAllText(filePath).Split("\n");
+                        contents = File.ReadAllText(filePath).Split("\r\n\r\n");
+                        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                            contents = File.ReadAllText(filePath).Split("\n\n");
                     }
                     //suhhee_lab02
 
