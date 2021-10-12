@@ -13,19 +13,9 @@ namespace kimchi_ssg
 
     public class Helpers
     {
-        
-        static readonly string HTMLstr = @"
-                                <html lang=""en-CA"">
-                                <head>
-                                <meta charset = ""utf-8"">
-                                <title> Filename </title>
-                                <meta name = ""viewport"" content = ""width=device-width, initial-scale=1"">
-                                </head>
-                                <body>
-                                </body>
-                                </html>";
-
-        static readonly string style = @"<style>
+        static string generateHTMLStr(string[] source, string[] elements, string title, string extension)
+        {
+            string style = @"<style>
                                 *{
                                     background-color: #9999FF;
                                  }
@@ -41,23 +31,15 @@ namespace kimchi_ssg
                                       margin: auto;
                                   }
                                </style>";
-        static string generateHTMLStr(string[] source, string[] elements, string title, string extension)
-        {
+
             //Suhhee_lab02-Add regular expression for markdown files
-            var bold = new Regex(@"(\*\*|__) (?=\S) (.+?[*_]*) (?<=\S) \1",
-                    RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.Compiled);
-            var italic = new Regex(@"(\*|_) (?=\S) (.+?) (?<=\S) \1",
-                    RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.Compiled);
-            var anchor = new Regex(@"\[([^]]*)\]\(([^\s^\)]*)[\s\)]",
-                    RegexOptions.Singleline | RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled);
-            var h1 = new Regex(@"(^\#) (.*)",
-                    RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled);
-            var h2 = new Regex(@"(\#\#) (.*)",
-                    RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.Compiled);
-            var hr = new Regex(@"(\---) (.*)",
-                    RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.Compiled);
-            var code = new Regex(@"\`([^\`].*?)\`",
-                    RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.Compiled);
+            var bold = new Regex(@"(\*\*|__) (?=\S) (.+?[*_]*) (?<=\S) \1");
+            var italic = new Regex(@"(\*|_) (?=\S) (.+?) (?<=\S) \1");
+            var anchor = new Regex(@"\[([^]]*)\]\(([^\s^\)]*)[\s\)]");
+            var h1 = new Regex(@"(^\#) (.*)");
+            var h2 = new Regex(@"(\#\#) (.*)");
+            var hr = new Regex(@"(\---) (.*)");
+            var code = new Regex(@"\`([^\`].*?)\`");
 
             //suhhee_lab02
             List<string> toHtml = new List<string>();
@@ -70,44 +52,39 @@ namespace kimchi_ssg
                     toHtml.Add(temp);
                 }
                 else
-                {
                     toHtml.Add(x);
-                }
 
                 if (x.Contains("<head>"))
-                {
                     toHtml.Add(style);
-                }
-
 
                 if (x.Contains("<body>"))
                 {
                     toHtml.Add("<div>");
                     //suhhee_lab02 - add to distinguish function for txt files and md files
-                    if (extension == ".txt")
+                    if (extension == FileExtension.TEXT)
                     {
-                        foreach (var s in elements)
+                        foreach (var element in elements)
                         {
 
                             if (count == 0)
                             {
                                 toHtml.Add("<h1>");
-                                toHtml.Add(s);
+                                toHtml.Add(element);
                                 toHtml.Add("</h1>");
                             }
                             else
                             {
                                 toHtml.Add("<p>");
-                                toHtml.Add(s);
+                                toHtml.Add(element);
                                 toHtml.Add("</p>");
                             }
                             count++;
                         }
-                    }//suhhee_lab02 - add to distinguish function for txt files and md files
-                    else if (extension == ".md")
+                    }
+                    else if (extension == FileExtension.MARKDOWN)
                     {
                         foreach (var line in elements)
-                        {//suhhee_lab02 - replace to html tags
+                        {
                             var toBold = bold.Replace(line, @"<b>$2</b><br/>");
                             var toItalic = italic.Replace(toBold, @"<i>$2</i><br/>");
                             var toAnchor = anchor.Replace(toItalic, @"<a href='$1'>$2</a>");
@@ -115,102 +92,86 @@ namespace kimchi_ssg
                             var toH1 = h1.Replace(toH2, @"<h1>$2</h1>");
                             var toHr = hr.Replace(toH1, @"<hr>");
                             var toCode = code.Replace(toH1, @"<code>$1</code>");
-
                             toHtml.Add(toCode);
-
                         }
                     }
-                    //suhhee_lab02
                     toHtml.Add("</div>");
-
                 }
-
             }
 
-
-            string toHTMLfile = string.Join("\n", toHtml);
+            string toHTMLfile = string.Join(Seperator.newLineSeperator, toHtml);
             return toHTMLfile;
         }
 
         // parse the json file getting all valid arguments
-        public static void parseJSON(string jsonstring, string extension, string pout)
+        public static void parseJSON(string file, string output)
         {
-            string[] builtString = new string[4]{"","","",""};
+            string sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            var jsonString = File.ReadAllText(sCurrentDirectory + Seperator.pathSeperator + file);
+
+            string[] builtString = new string[4] { "", "", "", "" };
             bool valid = false;
-            if (extension == ".json")
-            ///eugene_lab04
-            {   var dict = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonstring);
-                
-				if(dict.ContainsKey("") || jsonstring == "{}")
+            var dict = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonString);
+
+            if (dict.ContainsKey("") || jsonString == "{}")
+            {
+                valid = true; // case with {} json
+                builtString[0] = "-v";
+            }
+            else
+            {
+                if (dict.ContainsKey("input"))
                 {
-                    valid = true; // case with {} json
-                    builtString[0] = "-v";
-                }else{
-                    
-                    if (dict.ContainsKey("input"))
-                    {
-                        builtString[0] = "--input" ;
-                        builtString[1] = dict["input"];
-                        valid = true;
-                    }
-                    else if (dict.ContainsKey("i"))
-                    {
-                        builtString[0] = "-i" ;
-                        builtString[1] = dict["i"];
-                        valid = true;
-                    }
-                    else if (dict.ContainsKey("output"))
-                    {
-                        builtString[2] = "--output ";
-                        builtString[3]  = dict["output"];
-						pout = dict["output"];
-                    }      
-                    
+                    builtString[0] = "--input";
+                    builtString[1] = dict["input"];
+                    valid = true;
                 }
-                if (valid)
+                else if (dict.ContainsKey("i"))
                 {
-                    if (dict.ContainsKey("output"))
-                    {
-						strToFile(builtString[1], dict["output"]);
-						pout = dict["output"];
-                    }
-                    else
-                    {
-                        strToFile(builtString[1], pout);
-                    }
-                    
+                    builtString[0] = "-i";
+                    builtString[1] = dict["i"];
+                    valid = true;
+                }
+                else if (dict.ContainsKey("output"))
+                {
+                    builtString[2] = "--output ";
+                    builtString[3] = dict["output"];
+                    output = dict["output"];
+                }
+
+            }
+            if (valid)
+            {
+                if (dict.ContainsKey("output"))
+                {
+                    strToFile(builtString[1], dict["output"]);
+                    output = dict["output"];
                 }
                 else
-                {
-                    Console.WriteLine("Invalid json file contents");
-                }     
+                    strToFile(builtString[1], output);
             }
-            
+            else
+            {
+                Console.WriteLine("Invalid json file contents");
+            }
         }
 
-        public static void generateHTMLfile(string html, string txtDir, string fileName)//
+        public static void generateHTMLfile(string html, string outputDir, string fileName)//
         {
             try
             {
-                if (!Directory.Exists(txtDir))
-                {
-                    Directory.CreateDirectory(txtDir);
-                   
-                }
+                if (!Directory.Exists(outputDir))
+                    Directory.CreateDirectory(outputDir);
+
                 var doc = new HtmlDocument();
                 HtmlCommentNode hcn = doc.CreateComment("<!doctype html>");
-  
 
                 var node = HtmlNode.CreateNode(html);
 
                 doc.DocumentNode.AppendChild(hcn);
                 doc.DocumentNode.AppendChild(node);
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)){
-                    doc.Save(txtDir + "/" + fileName + ".html");    
-                }else{ //Windows
-                    doc.Save(txtDir + "\\" + fileName + ".html");
-                }
-                
+
+                doc.Save(outputDir + Seperator.pathSeperator + fileName + ".html");
             }
             catch (Exception e)
             {
@@ -218,149 +179,80 @@ namespace kimchi_ssg
             }
         }
 
-        public static void testJSONFirst(string s, string pout)
+        public static void strToFile(string file, string outputFolder)
         {
-            //eugene_lab04 - edited to get json file
-            string sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            string filePath = Path.GetFullPath(sCurrentDirectory);
-            string fileDirectory = Path.GetDirectoryName(filePath);
-			string substr = "\\";
-            if (Path.GetExtension(s) == ".json")
-            {
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                {
-                    substr = "/";
-                }
-                var contents = File.ReadAllText(fileDirectory +substr+ s);
-                string extension = Path.GetExtension(s);
-                parseJSON(contents, extension, pout);
-            } else {
-                
-                strToFile(s, pout);
-            }
-        }
-        public static void strToFile(string s, string output)
-        {
-			string substr = "\\";
-             //\\net5.0\\ removed to work for linux
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                substr = "/";
-            }
-            //suhhee_lab02 - create HTML files in dist folder in main directory
-            string[] html;
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                html = HTMLstr.Split("\n");
-            else
-                html = HTMLstr.Split("\r\n");
-            string sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            string sFile = sCurrentDirectory;//Path.Combine(sCurrentDirectory, substr); //windows can modify to ur usecase
-			if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-			{
-				sFile = sCurrentDirectory;
-			}
-            string textPath = Path.GetFullPath(sFile);
+            string HTMLstr = @"
+                                <html lang=""en-CA"">
+                                <head>
+                                <meta charset = ""utf-8"">
+                                <title> Filename </title>
+                                <meta name = ""viewport"" content = ""width=device-width, initial-scale=1"">
+                                </head>
+                                <body>
+                                </body>
+                                </html>";
 
-            string txtDirectory = Path.GetDirectoryName(textPath);
-			//added safety check
-			if(output == "" || output == null){
-				output = "dist";
-			}
-            
-            if (Directory.Exists(txtDirectory+ substr + output))
-            {
-                Directory.Delete(txtDirectory + substr + output, true);         
-            }
-            Directory.CreateDirectory(txtDirectory + substr + output);
-               
+            string[] html = HTMLstr.Split(Seperator.newLineSeperator);
+            string sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string fileName = Path.GetFileNameWithoutExtension(sCurrentDirectory + Seperator.pathSeperator + file);
+            string extension = Path.GetExtension(sCurrentDirectory + Seperator.pathSeperator + file);
+
+            //added safety check
+            if (outputFolder == "" || outputFolder == null)
+                outputFolder = "dist";
+
+            string outputPath = sCurrentDirectory + Seperator.pathSeperator + outputFolder;
+            if (Directory.Exists(outputPath))
+                Directory.Delete(outputPath, true);
+            Directory.CreateDirectory(outputPath + outputFolder);
+
             string toHTMLfile = string.Empty;
-            if (Path.GetExtension(s) == ".txt")
+            if (Path.GetExtension(file) == FileExtension.TEXT)
             {
-                var text = File.ReadAllText(txtDirectory + substr + s); //removed "\\net5.0\\"
-                
-
-                string fileName = Path.GetFileNameWithoutExtension(txtDirectory+ substr +s);
-                string extension = Path.GetExtension(txtDirectory+ substr + s); 
-
-                string[] contents;
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                    contents = text.Split("\n\n");
-                else
-                    contents = text.Split("\r\n\r\n");
-
-
-                toHTMLfile = generateHTMLStr(html, contents, fileName, extension);
-                generateHTMLfile(toHTMLfile, txtDirectory + substr + output, fileName);
+                var text = File.ReadAllText(sCurrentDirectory + Seperator.pathSeperator + file);
+                string[] contents = text.Split(Seperator.newLineDoubleSeperator);
+                generateHTMLfile(generateHTMLStr(html, contents, fileName, extension), outputPath, fileName);
             }
-            //suhhee_lab02 - edited to get md files 
-            else if (Path.GetExtension(s) == ".md") 
+            else if (Path.GetExtension(file) == FileExtension.MARKDOWN)
             {
-                
-                var contents = File.ReadAllLines(txtDirectory+substr+s); //+ "\\net5.0\\"
-
-                string fileName = Path.GetFileNameWithoutExtension(s);
-                string extension = Path.GetExtension(s);
-                   
-                toHTMLfile = generateHTMLStr(html, contents, fileName, extension);
-
-                generateHTMLfile(toHTMLfile, txtDirectory + substr+output, fileName); //\\net5.0\\
-                
-
+                var contents = File.ReadAllLines(sCurrentDirectory + Seperator.pathSeperator + file);
+                generateHTMLfile(generateHTMLStr(html, contents, fileName, extension), outputPath, fileName);
             }
-			else
-			{
-				// suhhee_lab02
-				//suhhee_lab02 - edited to get md files in folder
+            else
+            {
+                List<string> txtList = new List<string>();
+                DirectoryInfo di = new DirectoryInfo(sCurrentDirectory + Seperator.pathSeperator + file);
 
-				List<string> txtList = new List<string>();
-                DirectoryInfo di = new DirectoryInfo(txtDirectory + substr +s);
-
-            
-                //suhhee_lab02 - added md file extension
-                foreach (var dir in di.EnumerateFiles().Where(x => x.ToString().EndsWith(".txt") || x.ToString().EndsWith(".md")))
-                //suhhee_lab02
+                foreach (var dir in di.EnumerateFiles().Where(x => x.ToString().EndsWith(FileExtension.TEXT) || x.ToString().EndsWith(FileExtension.MARKDOWN)))
                 {
-                    
                     txtList.Add(dir.ToString());
-                   
                 }
-                
+
                 foreach (var filePath in txtList)
                 {
                     // read the text's paragrah 
-                    string extension = Path.GetExtension(filePath);
+                    extension = Path.GetExtension(filePath);
                     string[] contents;
-                    //suhhee_lab02 - add to read md files
-                    if (extension == ".md")
-                    {
+                    if (extension == FileExtension.MARKDOWN)
                         contents = File.ReadAllLines(filePath);
-                    }
                     else
-                    {
-                        contents = File.ReadAllText(filePath).Split("\r\n\r\n");
-                        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                            contents = File.ReadAllText(filePath).Split("\n\n");
-                    }
-                    //suhhee_lab02
+                        contents = File.ReadAllText(filePath).Split(Seperator.newLineDoubleSeperator);
 
-                    List<string> pathSplit = filePath.Split("\\").ToList();
-					if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-					{
-						pathSplit = filePath.Split("/").ToList();
-					}
                     //get title 
-                    string fileName = Path.GetFileNameWithoutExtension(filePath);
-
-
+                    fileName = Path.GetFileNameWithoutExtension(filePath);
                     toHTMLfile = generateHTMLStr(html, contents, fileName, extension);
 
                     //get saving loation
-                    string saveLoc = Path.GetDirectoryName(filePath); /////
+                    string saveLoc = Path.GetDirectoryName(filePath);
 
-                    generateHTMLfile(toHTMLfile, txtDirectory + substr + output, fileName);
-				}
+                    generateHTMLfile(toHTMLfile, outputPath, fileName);
+                }
             }
-            
+        }
+
+        public static bool isLinux()
+        {
+            return RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
         }
 
         public static string getOptions()
