@@ -12,7 +12,7 @@ namespace kimchi_ssg
 {
     public class Helpers
     {
-        static string generateHTMLStr(string title, string extension, string table, string[] elements = null)
+        static string generateHTMLStr(string title, string extension, string table, string style, string[] elements = null)
         {
             var bold = new Regex(@"(\*\*|__) (?=\S) (.+?[*_]*) (?<=\S) \1");
             var italic = new Regex(@"(\*|_) (?=\S) (.+?) (?<=\S) \1");
@@ -73,7 +73,7 @@ namespace kimchi_ssg
             }
             
             toHtml.Add("</div></div>");
-            return generateInterporatedstring(title,Style.def ,string.Join(Seperator.newLineSeperator, toHtml));
+            return generateInterporatedstring(title, style, string.Join(Seperator.newLineSeperator, toHtml));
         }
 
         // parse the json file getting all valid arguments
@@ -84,6 +84,7 @@ namespace kimchi_ssg
 
             string[] builtString = new string[4] { "", "", "", "" };
             bool valid = false;
+            string style = Style.def;
             var dict = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonString);
 
             if (dict.ContainsKey("") || jsonString == "{}")
@@ -93,35 +94,31 @@ namespace kimchi_ssg
             }
             else
             {
-                if (dict.ContainsKey("input"))
+                if (dict.ContainsKey("theme"))
+                {
+                    string found;
+                    if (dict.TryGetValue("theme", out found) && found == "darkMode")
+                    {
+                        style = Style.darkMode;
+                    }
+                    else if (dict.TryGetValue("theme", out found) && found == "lightMode")
+                        style = Style.lightMode;
+                }
+                if (dict.ContainsKey("input") || dict.ContainsKey("i"))
                 {
                     builtString[0] = "--input";
                     builtString[1] = dict["input"];
                     valid = true;
-                }
-                else if (dict.ContainsKey("i"))
-                {
-                    builtString[0] = "-i";
-                    builtString[1] = dict["i"];
-                    valid = true;
-                }
-                else if (dict.ContainsKey("output"))
-                {
-                    builtString[2] = "--output ";
-                    builtString[3] = dict["output"];
-                    output = dict["output"];
-                }
 
+
+                }
             }
             if (valid)
             {
                 if (dict.ContainsKey("output"))
-                {
-                    strToFile(builtString[1], dict["output"]);
-                    output = dict["output"];
-                }
+                    strToFile(dict["input"], dict["output"], style);
                 else
-                    strToFile(builtString[1], output);
+                    strToFile(dict["input"], output,style);
             }
             else
             {
@@ -153,7 +150,7 @@ namespace kimchi_ssg
             }
         }
 
-        public static void strToFile(string file, string outputFolder)
+        public static void strToFile(string file, string outputFolder, string style)
         {
             string sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
             string fileName = Path.GetFileNameWithoutExtension(sCurrentDirectory + Seperator.pathSeperator + file);
@@ -177,15 +174,15 @@ namespace kimchi_ssg
                 var text = File.ReadAllText(sCurrentDirectory + Seperator.pathSeperator + file);
                 string[] contents = text.Split(Seperator.newLineDoubleSeperator);
                 fileList.Add(fileName);
-                generateHTMLfile(generateHTMLStr("index", "html", generateTableOfContents(fileList)), outputPath, "index");
-                generateHTMLfile(generateHTMLStr(fileName, extension, generateTableOfContents(fileList), contents), outputPath, fileName);
+                generateHTMLfile(generateHTMLStr("index", "html", generateTableOfContents(fileList), style) ,outputPath, "index"); // creating home page
+                generateHTMLfile(generateHTMLStr(fileName, extension, generateTableOfContents(fileList), style, contents), outputPath, fileName);
             }
             else if (Path.GetExtension(file) == FileExtension.MARKDOWN)
             {
                 var contents = File.ReadAllLines(sCurrentDirectory + Seperator.pathSeperator + file);
                 fileList.Add(fileName);
-                generateHTMLfile(generateHTMLStr("index", "html", generateTableOfContents(fileList)), outputPath, "index");
-                generateHTMLfile(generateHTMLStr(fileName, extension, generateTableOfContents(fileList),contents), outputPath, fileName);
+                generateHTMLfile(generateHTMLStr("index", "html", generateTableOfContents(fileList), style), outputPath, "index"); // creating home page
+                generateHTMLfile(generateHTMLStr(fileName, extension, generateTableOfContents(fileList), style, contents), outputPath, fileName);
             }
             else
             {
@@ -211,14 +208,14 @@ namespace kimchi_ssg
 
                     //get title 
                     fileName = Path.GetFileNameWithoutExtension(filePath);
-                    toHTMLfile = generateHTMLStr(fileName, extension, generateTableOfContents(fileList),contents);
+                    toHTMLfile = generateHTMLStr(fileName, extension, generateTableOfContents(fileList), style, contents);
 
                     //get saving loation
                     string saveLoc = Path.GetDirectoryName(filePath);
                     
                     generateHTMLfile(toHTMLfile, outputPath, fileName);
                 }
-                generateHTMLfile(generateHTMLStr("index", "html", generateTableOfContents(fileList)), outputPath, "index");
+                generateHTMLfile(generateHTMLStr("index", "html", generateTableOfContents(fileList), style), outputPath, "index"); // creating home page
             }
         }
 
