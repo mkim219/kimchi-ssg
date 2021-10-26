@@ -16,7 +16,7 @@ namespace kimchi_ssg
                     Helpers.parseJSON(args[1], "dist");
 
                 if (args[0] == "--input" || args[0] == "-i")
-                    Helpers.strToFile(args[1], "dist", Style.def);
+                    Helpers.strToFile(args[1], "dist");
 
                 if (args[0] == "--version" || args[0] == "-v")
                     Console.WriteLine(Helpers.getVersion());
