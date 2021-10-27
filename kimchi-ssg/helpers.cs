@@ -12,7 +12,7 @@ namespace kimchi_ssg
 {
     public class Helpers
     {
-        static string generateHTMLStr(string title, string extension, string table, string style, string[] elements = null)
+        static string generateHTMLStr(string title, string extension, string table, string style, string meta, string[] elements = null)
         {
             var bold = new Regex(@"(\*\*|__) (?=\S) (.+?[*_]*) (?<=\S) \1");
             var italic = new Regex(@"(\*|_) (?=\S) (.+?) (?<=\S) \1");
@@ -34,7 +34,6 @@ namespace kimchi_ssg
                 toHtml.Add(@"<div class=""contents"">");
                 foreach (var element in elements)
                 {
-
                     if (count == 0)
                     {
                         toHtml.Add("<h1>");
@@ -49,7 +48,6 @@ namespace kimchi_ssg
                     }
                     count++;
                 }
-
             }
             else if (extension == FileExtension.MARKDOWN)
             {
@@ -68,12 +66,10 @@ namespace kimchi_ssg
                 }
             }
             else
-            {
                 toHtml.Add(table);
-            }
             
             toHtml.Add("</div></div>");
-            return generateInterporatedstring(title, style, string.Join(Seperator.newLineSeperator, toHtml));
+            return generateInterporatedstring(title, style, string.Join(Seperator.newLineSeperator, toHtml), meta);
         }
 
         // parse the json file getting all valid arguments
@@ -98,9 +94,7 @@ namespace kimchi_ssg
                 {
                     string found;
                     if (dict.TryGetValue("theme", out found) && found == "darkMode")
-                    {
                         style = Style.darkMode;
-                    }
                     else if (dict.TryGetValue("theme", out found) && found == "lightMode")
                         style = Style.lightMode;
                 }
@@ -109,8 +103,6 @@ namespace kimchi_ssg
                     builtString[0] = "--input";
                     builtString[1] = dict["input"];
                     valid = true;
-
-
                 }
             }
             if (valid)
@@ -134,8 +126,7 @@ namespace kimchi_ssg
                     Directory.CreateDirectory(outputDir);
 
                 var doc = new HtmlDocument();
-                HtmlCommentNode hcn = doc.CreateComment(@"<!doctype html>"
-);
+                HtmlCommentNode hcn = doc.CreateComment(@"<!doctype html>");
 
                 var node = HtmlNode.CreateNode(html);
 
@@ -166,23 +157,21 @@ namespace kimchi_ssg
                 Directory.Delete(outputPath, true);
             Directory.CreateDirectory(outputPath + outputFolder);
 
-            
-
             string toHTMLfile = string.Empty;
             if (Path.GetExtension(file) == FileExtension.TEXT)
             {
                 var text = File.ReadAllText(sCurrentDirectory + Seperator.pathSeperator + file);
                 string[] contents = text.Split(Seperator.newLineDoubleSeperator);
                 fileList.Add(fileName);
-                generateHTMLfile(generateHTMLStr("index", "html", generateTableOfContents(fileList), style) ,outputPath, "index"); // creating home page
-                generateHTMLfile(generateHTMLStr(fileName, extension, generateTableOfContents(fileList), style, contents), outputPath, fileName);
+                generateHTMLfile(generateHTMLStr("index", "html", generateTableOfContents(fileList), style, generateMeta("index")) ,outputPath, "index"); // creating home page
+                generateHTMLfile(generateHTMLStr(fileName, extension, generateTableOfContents(fileList), style, generateMeta(fileName), contents), outputPath, fileName);
             }
             else if (Path.GetExtension(file) == FileExtension.MARKDOWN)
             {
                 var contents = File.ReadAllLines(sCurrentDirectory + Seperator.pathSeperator + file);
                 fileList.Add(fileName);
-                generateHTMLfile(generateHTMLStr("index", "html", generateTableOfContents(fileList), style), outputPath, "index"); // creating home page
-                generateHTMLfile(generateHTMLStr(fileName, extension, generateTableOfContents(fileList), style, contents), outputPath, fileName);
+                generateHTMLfile(generateHTMLStr("index", "html", generateTableOfContents(fileList), style, generateMeta("index")), outputPath, "index"); // creating home page
+                generateHTMLfile(generateHTMLStr(fileName, extension, generateTableOfContents(fileList), style, generateMeta(fileName), contents), outputPath, fileName);
             }
             else
             {
@@ -208,14 +197,14 @@ namespace kimchi_ssg
 
                     //get title 
                     fileName = Path.GetFileNameWithoutExtension(filePath);
-                    toHTMLfile = generateHTMLStr(fileName, extension, generateTableOfContents(fileList), style, contents);
+                    toHTMLfile = generateHTMLStr(fileName, extension, generateTableOfContents(fileList), style, generateMeta(fileName), contents);
 
                     //get saving loation
                     string saveLoc = Path.GetDirectoryName(filePath);
                     
                     generateHTMLfile(toHTMLfile, outputPath, fileName);
                 }
-                generateHTMLfile(generateHTMLStr("index", "html", generateTableOfContents(fileList), style), outputPath, "index"); // creating home page
+                generateHTMLfile(generateHTMLStr("index", "html", generateTableOfContents(fileList), style, generateMeta("index")), outputPath, "index"); // creating home page
             }
         }
 
@@ -224,12 +213,13 @@ namespace kimchi_ssg
             return RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
         }
 
-        public static string generateInterporatedstring(string title, string style ,string body)
+        public static string generateInterporatedstring(string title, string style ,string body, string meta)
         {
             return $@"
                      <html lang=""en-CA"">
                      <head>
                      <meta charset = ""utf-8"">
+                     {meta}
                      <title> {title} </title>
                      <meta name = ""viewport"" content = ""width=device-width, initial-scale=1"">
                      {style}
@@ -238,6 +228,23 @@ namespace kimchi_ssg
                      {body}
                      </body>
                      </html>";
+        }
+
+        public static string generateMeta(string title)
+        {
+            Console.WriteLine($"Enter keyword for {title}: ");
+            string keyword = Console.ReadLine();
+
+            Console.WriteLine($"Enter description for {title}: ");
+            string description = Console.ReadLine();
+
+            Console.WriteLine($"Enter author for {title}: ");
+            string author = Console.ReadLine();
+
+
+            return $@"<meta name=""keyword"" keyword=""{ keyword}"">
+                      <meta name=""description"" description=""{description}"">
+                      <meta name=""author"" description=""{author}"">";
         }
 
         public static string generateTableOfContents(List<string> file)
