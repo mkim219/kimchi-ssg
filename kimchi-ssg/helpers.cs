@@ -1,14 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
-using HtmlAgilityPack;
-using System.Text.Json;
-using System.Runtime.InteropServices;
+// <copyright file="helpers.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Kimchi_ssg
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Runtime.InteropServices;
+    using System.Text.Json;
+    using System.Text.RegularExpressions;
+    using HtmlAgilityPack;
+
     public class Helpers
     {
         /// <summary>
@@ -80,7 +84,7 @@ namespace Kimchi_ssg
             }
 
             toHtml.Add("</div></div>");
-            return GenerateInterporatedstring(title, style, string.Join(Seperator.newLineSeperator, toHtml), meta);
+            return GenerateInterporatedstring(title, style, string.Join(Seperator.NewLineSeperator, toHtml), meta);
         }
 
         /// <summary>
@@ -91,7 +95,7 @@ namespace Kimchi_ssg
         public static void ParseJSON(string file, string output)
         {
             string sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            var jsonString = File.ReadAllText(sCurrentDirectory + Seperator.pathSeperator + file);
+            var jsonString = File.ReadAllText(sCurrentDirectory + Seperator.PathSeperator + file);
             Console.WriteLine(sCurrentDirectory);
             string[] builtString = new string[4] { string.Empty, string.Empty, string.Empty, string.Empty };
             bool valid = false;
@@ -123,7 +127,6 @@ namespace Kimchi_ssg
                     builtString[1] = dict["input"];
                     valid = true;
                 }
-
             }
 
             if (valid)
@@ -146,9 +149,9 @@ namespace Kimchi_ssg
         /// <summary>
         /// Generate HTML file.
         /// </summary>
-        /// <param name="html">complete HTML string</param>
+        /// <param name="html">complete HTML string.</param>
         /// <param name="outputDir">output directory where result will be saved.</param>
-        /// <param name="fileName">the list of file name or single file name</param>
+        /// <param name="fileName">the list of file name or single file name.</param>
         public static void GenerateHTMLfile(string html, string outputDir, string fileName)
         {
             try
@@ -166,7 +169,7 @@ namespace Kimchi_ssg
                 doc.DocumentNode.AppendChild(hcn);
                 doc.DocumentNode.AppendChild(node);
 
-                doc.Save(outputDir + Seperator.pathSeperator + fileName + ".html");
+                doc.Save(outputDir + Seperator.PathSeperator + fileName + ".html");
             }
             catch (Exception e)
             {
@@ -183,8 +186,8 @@ namespace Kimchi_ssg
         public static void ConvertStrToFile(string file, string outputFolder, string style)
         {
             string sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            string fileName = Path.GetFileNameWithoutExtension(sCurrentDirectory + Seperator.pathSeperator + file);
-            string extension = Path.GetExtension(sCurrentDirectory + Seperator.pathSeperator + file);
+            string fileName = Path.GetFileNameWithoutExtension(sCurrentDirectory + Seperator.PathSeperator + file);
+            string extension = Path.GetExtension(sCurrentDirectory + Seperator.PathSeperator + file);
             List<string> fileList = new ();
 
             if (outputFolder == string.Empty || outputFolder == null)
@@ -192,7 +195,7 @@ namespace Kimchi_ssg
                 outputFolder = "dist";
             }
 
-            string outputPath = sCurrentDirectory + Seperator.pathSeperator + outputFolder;
+            string outputPath = sCurrentDirectory + Seperator.PathSeperator + outputFolder;
             if (Directory.Exists(outputPath))
             {
                 Directory.Delete(outputPath, true);
@@ -203,15 +206,15 @@ namespace Kimchi_ssg
             string toHTMLfile = string.Empty;
             if (Path.GetExtension(file) == FileExtension.TEXT)
             {
-                var text = File.ReadAllText(sCurrentDirectory + Seperator.pathSeperator + file);
-                string[] contents = text.Split(Seperator.newLineDoubleSeperator);
+                var text = File.ReadAllText(sCurrentDirectory + Seperator.PathSeperator + file);
+                string[] contents = text.Split(Seperator.NewLineDoubleSeperator);
                 fileList.Add(fileName);
                 GenerateHTMLfile(GenerateHTMLStr("index", "html", GenerateTableOfContents(fileList), style, GenerateMeta("index")), outputPath, "index"); // creating home page
                 GenerateHTMLfile(GenerateHTMLStr(fileName, extension, GenerateTableOfContents(fileList), style, GenerateMeta(fileName), contents), outputPath, fileName);
             }
             else if (Path.GetExtension(file) == FileExtension.MARKDOWN)
             {
-                var contents = File.ReadAllLines(sCurrentDirectory + Seperator.pathSeperator + file);
+                var contents = File.ReadAllLines(sCurrentDirectory + Seperator.PathSeperator + file);
                 fileList.Add(fileName);
                 GenerateHTMLfile(GenerateHTMLStr("index", "html", GenerateTableOfContents(fileList), style, GenerateMeta("index")), outputPath, "index"); // creating home page
                 GenerateHTMLfile(GenerateHTMLStr(fileName, extension, GenerateTableOfContents(fileList), style, GenerateMeta(fileName), contents), outputPath, fileName);
@@ -219,7 +222,7 @@ namespace Kimchi_ssg
             else
             {
                 List<string> txtList = new ();
-                DirectoryInfo di = new (sCurrentDirectory + Seperator.pathSeperator + file);
+                DirectoryInfo di = new (sCurrentDirectory + Seperator.PathSeperator + file);
 
                 foreach (var dir in di.EnumerateFiles().Where(x => x.ToString().EndsWith(FileExtension.TEXT) || x.ToString().EndsWith(FileExtension.MARKDOWN)))
                 {
@@ -238,7 +241,7 @@ namespace Kimchi_ssg
                     }
                     else
                     {
-                        contents = File.ReadAllText(filePath).Split(Seperator.newLineDoubleSeperator);
+                        contents = File.ReadAllText(filePath).Split(Seperator.NewLineDoubleSeperator);
                     }
 
                     // get title
@@ -292,7 +295,7 @@ namespace Kimchi_ssg
         /// <summary>
         /// Generate meta tags based on user input per file.
         /// </summary>
-        /// <param name="title">the title of txt or md file</param>
+        /// <param name="title">the title of txt or md file.</param>
         /// <returns>return meta tags.</returns>
         public static string GenerateMeta(string title)
         {
@@ -305,8 +308,7 @@ namespace Kimchi_ssg
             Console.WriteLine($"Enter author for {title}: ");
             string author = Console.ReadLine();
 
-
-            return $@"<meta name=string.Emptykeywordstring.Empty keyword=string.Empty{ keyword}string.Empty>
+            return $@"<meta name=string.Emptykeywordstring.Empty keyword=string.Empty{keyword}string.Empty>
                       <meta name=string.Emptydescriptionstring.Empty description=string.Empty{description}string.Empty>
                       <meta name=string.Emptyauthorstring.Empty description=string.Empty{author}string.Empty>";
         }
@@ -329,7 +331,7 @@ namespace Kimchi_ssg
             }
 
             tableOfContents.Add("</ul></nav></div>");
-            return string.Join(Seperator.newLineSeperator, tableOfContents.ToArray());
+            return string.Join(Seperator.NewLineSeperator, tableOfContents.ToArray());
         }
 
         /// <summary>

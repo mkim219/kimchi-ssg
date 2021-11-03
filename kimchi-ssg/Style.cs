@@ -1,4 +1,8 @@
-﻿namespace Kimchi_ssg
+﻿// <copyright file="Style.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace Kimchi_ssg
 {
     internal class Style
     {

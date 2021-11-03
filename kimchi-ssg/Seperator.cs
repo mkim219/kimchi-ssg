@@ -1,23 +1,54 @@
-﻿namespace Kimchi_ssg
+﻿// <copyright file="Seperator.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace Kimchi_ssg
 {
     internal class Seperator
     {
-        public static string pathSeperator { get { return Helpers.IsLinux() ? frontSlash : backSlash; } }
+        public static string PathSeperator
+        {
+            get { return Helpers.IsLinux() ? FrontSlash : BackSlash; }
+        }
 
-        public static string newLineSeperator { get { return Helpers.IsLinux() ? linuxNewLine : windowNewLine; } }
+        public static string NewLineSeperator
+        {
+            get { return Helpers.IsLinux() ? LinuxNewLine : WindowNewLine; }
+        }
 
-        public static string newLineDoubleSeperator { get { return Helpers.IsLinux() ? linuxDoubleNewLine : windowDoubleNewLine; } }
+        public static string NewLineDoubleSeperator
+        {
+            get { return Helpers.IsLinux() ? LinuxDoubleNewLine : WindowDoubleNewLine; }
+        }
 
-        public static string linuxNewLine { get { return "\n"; } }
+        public static string LinuxNewLine
+        {
+            get { return "\n"; }
+        }
 
-        public static string windowNewLine { get { return "\r\n"; } }
+        public static string WindowNewLine
+        {
+            get { return "\r\n"; }
+        }
 
-        public static string linuxDoubleNewLine { get { return "\n\n"; } }
+        public static string LinuxDoubleNewLine
+        {
+            get { return "\n\n"; }
+        }
 
-        public static string windowDoubleNewLine { get { return "\r\n\r\n"; } }
+        public static string WindowDoubleNewLine
+        {
+            get { return "\r\n\r\n"; }
+        }
 
-        public static string backSlash { get { return "\\"; } }
+        public static string BackSlash
+        {
+            get { return "\\"; }
+        }
 
-        public static string frontSlash { get { return "/"; } }
+        public static string FrontSlash
+        {
+            get { return "/"; }
+        }
     }
 }

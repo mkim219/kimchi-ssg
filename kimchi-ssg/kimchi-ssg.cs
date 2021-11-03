@@ -1,11 +1,15 @@
-﻿using System;
-using System.IO;
+﻿// <copyright file="kimchi-ssg.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Kimchi_ssg
 {
-    class Kimchi_ssg
+    using System;
+    using System.IO;
+
+    internal class Kimchi_ssg
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             try
             {
@@ -21,7 +25,7 @@ namespace Kimchi_ssg
 
                 if (args[0] == "--input" || args[0] == "-i")
                 {
-                    Helpers.ConvertStrToFile(args[1], "dist", Style.def);
+                    Helpers.ConvertStrToFile(args[1], "dist", Style.Def);
                 }
 
                 if (args[0] == "--version" || args[0] == "-v")
@@ -45,6 +49,11 @@ namespace Kimchi_ssg
                     {
                         Formatter.FixFormat();
                     }
+                }
+
+                if (args[0] == "--lint" || args[0] == "-l")
+                {
+                    Formatter.FixLint();
                 }
             }
             catch (FileNotFoundException file)

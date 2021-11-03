@@ -1,14 +1,18 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
+﻿// <copyright file="Formatter.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Kimchi_ssg
 {
+    using System;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Linq;
+
     internal class Formatter
     {
         /// <summary>
-        /// Check for installing dotnet-format
+        /// Check for installing dotnet-format.
         /// </summary>
         /// <returns>return true when dotnet-format installed in local, false otherwise.</returns>
         public static bool IsInstalled()
@@ -41,7 +45,7 @@ namespace Kimchi_ssg
         }
 
         /// <summary>
-        /// Run the dotnet command for fixing the format based on .editorconfig.
+        /// Fix the format of the code.
         /// </summary>
         public static void FixFormat()
         {
@@ -65,6 +69,31 @@ namespace Kimchi_ssg
         }
 
         /// <summary>
+        /// Fix the lint of the code.
+        /// </summary>
+        public static void FixLint()
+        {
+            var directory = TryGetSolutionDirectoryInfo();
+            var process = new Process();
+            Console.WriteLine(directory.ToString());
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = "dotnet-format",
+                Arguments = $"-a warn {directory}/kimchi-ssg.sln",
+            };
+            try
+            {
+                process.StartInfo = startInfo;
+                process.Start();
+                process.WaitForExit();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        /// <summary>
         /// Try to find .sln file for command line option.
         /// </summary>
         /// <returns>It returns directoryInfo object that contains current sln directoryInfo.</returns>
@@ -74,6 +103,7 @@ namespace Kimchi_ssg
             while (directory != null && !directory.GetFiles("*.sln").Any())
             {
                 directory = directory.Parent;
+                Console.WriteLine(directory);
             }
 
             return directory;
