@@ -5,10 +5,6 @@ indent_size = 4
 indent_style=space
 
 # A C# code element is missing a documentation header.
-# https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1600.md
-dotnet_diagnostic.SA1600.severity = silent
-
-# A C# code element is missing a documentation header.
 # https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1649.md
 dotnet_diagnostic.SA1649.severity = silent
 

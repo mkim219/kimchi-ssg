@@ -1,6 +1,8 @@
-﻿// <copyright file="Style.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+﻿// -----------------------------------------------------------------------
+// <copyright file="Style.cs" company="Minsu Kim">
+// Copyright (c) Minsu Kim. All rights reserved.
 // </copyright>
+// -----------------------------------------------------------------------
 
 namespace Kimchi_ssg
 {
