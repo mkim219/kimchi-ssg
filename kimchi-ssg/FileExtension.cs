@@ -1,9 +1,11 @@
-﻿namespace kimchi_ssg
+﻿namespace Kimchi_ssg
 {
-    class FileExtension
+    internal class FileExtension
     {
         public static string JSON { get { return ".json"; } }
+
         public static string TEXT { get { return ".txt"; } }
+
         public static string MARKDOWN { get { return ".md"; } }
     }
 }

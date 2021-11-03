@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace kimchi_ssg
+﻿namespace Kimchi_ssg
 {
-    class Style
+    internal class Style
     {
-        public static string def = @"<style>
+        public static string Def = @"<style>
                                 *{
                                     background-color: #9999FF;
                                  }
@@ -44,7 +38,8 @@ namespace kimchi_ssg
                                     padding: 5px;
                                }
                                </style>";
-        public static string darkMode = @"<style>
+
+        public static string DarkMode = @"<style>
                                 *{
                                     background-color: #000000;
                                     color: #ffffff;
@@ -81,7 +76,8 @@ namespace kimchi_ssg
                                     padding: 5px;
                                }
                                </style>";
-        public static string lightMode = @"<style>
+
+        public static string LightMode = @"<style>
                                 *{
                                     background-color: #ffffff;
                                     color: #000000;
