@@ -75,7 +75,6 @@ namespace Kimchi_ssg
         {
             var directory = TryGetSolutionDirectoryInfo();
             var process = new Process();
-            Console.WriteLine(directory.ToString());
             var startInfo = new ProcessStartInfo
             {
                 FileName = "dotnet-format",
