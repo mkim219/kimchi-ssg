@@ -345,8 +345,10 @@ namespace Kimchi_ssg
             return @"
                 -i or --input<text file> : Input your text file to convert html, if the text file has space, you should use double-quote
                 -h or --help: Show the options
-                -v or --version: show current version
-				-c or --config: parse json to run options
+                -v or --version: Show current version
+				-c or --config: Parse json to run options
+                -f or --format: Fix the format
+                -l or --lint: Fix the lint 
             ";
         }
 
