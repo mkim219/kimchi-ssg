@@ -40,14 +40,15 @@ namespace Kimchi_ssg
             List<string> toHtml = new ();
             int count = 0;
 
-            toHtml.Add(@"<div class=string.Emptycontainerstring.Empty>");
-
+            toHtml.Add(@"<div class=""container"">");
             if (extension == FileExtension.TEXT)
             {
                 toHtml.Add(table);
-                toHtml.Add(@"<div class=string.Emptycontentsstring.Empty>");
+                toHtml.Add(@"<div class=""contents"">");
                 foreach (var element in elements)
                 {
+                    Console.WriteLine(element);
+                    Console.WriteLine("-------------------------------------");
                     if (count == 0)
                     {
                         toHtml.Add("<h1>");
@@ -67,7 +68,7 @@ namespace Kimchi_ssg
             else if (extension == FileExtension.MARKDOWN)
             {
                 toHtml.Add(table);
-                toHtml.Add(@"<div class=string.Emptycontentsstring.Empty>");
+                toHtml.Add(@"<div class=""contents"">");
                 foreach (var line in elements)
                 {
                     var toBold = bold.Replace(line, @"<b>$2</b><br/>");
@@ -86,6 +87,7 @@ namespace Kimchi_ssg
             }
 
             toHtml.Add("</div></div>");
+            Console.WriteLine(count);
             return GenerateInterporatedstring(title, style, string.Join(Seperator.NewLineSeperator, toHtml), meta);
         }
 
@@ -209,7 +211,8 @@ namespace Kimchi_ssg
             if (Path.GetExtension(file) == FileExtension.TEXT)
             {
                 var text = File.ReadAllText(sCurrentDirectory + Seperator.PathSeperator + file);
-                string[] contents = text.Split(Seperator.NewLineDoubleSeperator);
+                string[] contents = text.Split(Seperator.LinuxDoubleNewLine);
+
                 fileList.Add(fileName);
                 GenerateHTMLfile(GenerateHTMLStr("index", "html", GenerateTableOfContents(fileList), style, GenerateMeta("index")), outputPath, "index"); // creating home page
                 GenerateHTMLfile(GenerateHTMLStr(fileName, extension, GenerateTableOfContents(fileList), style, GenerateMeta(fileName), contents), outputPath, fileName);
@@ -223,8 +226,9 @@ namespace Kimchi_ssg
             }
             else
             {
-                List<string> txtList = new ();
-                DirectoryInfo di = new (sCurrentDirectory + Seperator.PathSeperator + file);
+                List<string> txtList = new List<string>();
+                DirectoryInfo di = new DirectoryInfo(sCurrentDirectory + Seperator.PathSeperator + file);
+
 
                 foreach (var dir in di.EnumerateFiles().Where(x => x.ToString().EndsWith(FileExtension.TEXT) || x.ToString().EndsWith(FileExtension.MARKDOWN)))
                 {
@@ -234,7 +238,7 @@ namespace Kimchi_ssg
 
                 foreach (var filePath in txtList)
                 {
-                    // read the text's paragrah
+                    // read the text's paragrah 
                     extension = Path.GetExtension(filePath);
                     string[] contents;
                     if (extension == FileExtension.MARKDOWN)
@@ -246,16 +250,15 @@ namespace Kimchi_ssg
                         contents = File.ReadAllText(filePath).Split(Seperator.NewLineDoubleSeperator);
                     }
 
-                    // get title
+                    //get title 
                     fileName = Path.GetFileNameWithoutExtension(filePath);
                     toHTMLfile = GenerateHTMLStr(fileName, extension, GenerateTableOfContents(fileList), style, GenerateMeta(fileName), contents);
 
-                    // get saving loation
+                    //get saving loation
                     string saveLoc = Path.GetDirectoryName(filePath);
 
                     GenerateHTMLfile(toHTMLfile, outputPath, fileName);
                 }
-
                 GenerateHTMLfile(GenerateHTMLStr("index", "html", GenerateTableOfContents(fileList), style, GenerateMeta("index")), outputPath, "index"); // creating home page
             }
         }
@@ -280,12 +283,12 @@ namespace Kimchi_ssg
         public static string GenerateInterporatedstring(string title, string style, string body, string meta)
         {
             return $@"
-                     <html lang=string.Emptyen-CAstring.Empty>
+                     <html lang=""en-CA"">
                      <head>
-                     <meta charset = string.Emptyutf-8string.Empty>
+                     <meta charset = ""utf-8"">
                      {meta}
                      <title> {title} </title>
-                     <meta name = string.Emptyviewportstring.Empty content = string.Emptywidth=device-width, initial-scale=1string.Empty>
+                     <meta name = ""viewport"" content = ""width=device-width, initial-scale=1"">
                      {style}
                      </head>
                      <body>
@@ -310,9 +313,9 @@ namespace Kimchi_ssg
             Console.WriteLine($"Enter author for {title}: ");
             string author = Console.ReadLine();
 
-            return $@"<meta name=string.Emptykeywordstring.Empty keyword=string.Empty{keyword}string.Empty>
-                      <meta name=string.Emptydescriptionstring.Empty description=string.Empty{description}string.Empty>
-                      <meta name=string.Emptyauthorstring.Empty description=string.Empty{author}string.Empty>";
+            return $@"<meta name=""keyword"" keyword=""{ keyword}"">
+                      <meta name=""description"" description=""{description}"">
+                      <meta name=""author"" description=""{author}"">";
         }
 
         /// <summary>
@@ -322,14 +325,12 @@ namespace Kimchi_ssg
         /// <returns>It returns a string that include list of files for table of contents.</returns>
         public static string GenerateTableOfContents(List<string> file)
         {
-            List<string> tableOfContents = new ()
-            {
-                @"<div class=string.Emptyleft-navstring.Empty><nav>",
-                $@"<ul><li><a href = string.Emptyindex.htmlstring.Empty>Home</a></li>",
-            };
+            List<string> tableOfContents = new List<string>();
+            tableOfContents.Add(@"<div class=""left-nav""><nav>");
+            tableOfContents.Add($@"<ul><li><a href = ""index.html"">Home</a></li>");
             foreach (var x in file)
             {
-                tableOfContents.Add($@"<li><a href = string.Empty{x}.htmlstring.Empty>{x}</a></li>");
+                tableOfContents.Add($@"<li><a href = ""{x}.html"">{x}</a></li>");
             }
 
             tableOfContents.Add("</ul></nav></div>");

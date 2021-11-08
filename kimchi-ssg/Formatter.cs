@@ -11,7 +11,7 @@ namespace Kimchi_ssg
     using System.IO;
     using System.Linq;
 
-    internal class Formatter
+    public class Formatter
     {
         /// <summary>
         /// Check for installing dotnet-format.
