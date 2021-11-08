@@ -47,8 +47,6 @@ namespace Kimchi_ssg
                 toHtml.Add(@"<div class=""contents"">");
                 foreach (var element in elements)
                 {
-                    Console.WriteLine(element);
-                    Console.WriteLine("-------------------------------------");
                     if (count == 0)
                     {
                         toHtml.Add("<h1>");
@@ -87,7 +85,6 @@ namespace Kimchi_ssg
             }
 
             toHtml.Add("</div></div>");
-            Console.WriteLine(count);
             return GenerateInterporatedstring(title, style, string.Join(Seperator.NewLineSeperator, toHtml), meta);
         }
 
@@ -100,7 +97,6 @@ namespace Kimchi_ssg
         {
             string sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
             var jsonString = File.ReadAllText(sCurrentDirectory + Seperator.PathSeperator + file);
-            Console.WriteLine(sCurrentDirectory);
             string[] builtString = new string[4] { string.Empty, string.Empty, string.Empty, string.Empty };
             bool valid = false;
             string style = Style.Def;
@@ -304,13 +300,13 @@ namespace Kimchi_ssg
         /// <returns>return meta tags.</returns>
         public static string GenerateMeta(string title)
         {
-            Console.WriteLine($"Enter keyword for {title}: ");
+            Console.Write($"Enter keyword for {title}: ");
             string keyword = Console.ReadLine();
 
-            Console.WriteLine($"Enter description for {title}: ");
+            Console.Write($"Enter description for {title}: ");
             string description = Console.ReadLine();
 
-            Console.WriteLine($"Enter author for {title}: ");
+            Console.Write($"Enter author for {title}: ");
             string author = Console.ReadLine();
 
             return $@"<meta name=""keyword"" keyword=""{ keyword}"">
