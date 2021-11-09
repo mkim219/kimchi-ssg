@@ -13,6 +13,7 @@ namespace Kimchi_ssg
     {
         private static void Main(string[] args)
         {
+            Helpers helper = new Helpers(null);
             try
             {
                 if (args == null || args.Length == 0)
@@ -22,22 +23,22 @@ namespace Kimchi_ssg
 
                 if (args[0] == "--config" || args[0] == "-c")
                 {
-                    Helpers.ParseJSON(args[1], "dist");
+                    helper.ParseJSON(args[1], "dist");
                 }
 
                 if (args[0] == "--input" || args[0] == "-i")
                 {
-                    Helpers.ConvertStrToFile(args[1], "dist", Style.Def);
+                    helper.ConvertStrToFile(args[1], "dist", Style.Def);
                 }
 
                 if (args[0] == "--version" || args[0] == "-v")
                 {
-                    Console.WriteLine(Helpers.GetVersion());
+                    Console.WriteLine(helper.GetVersion());
                 }
 
                 if (args[0] == "--help" || args[0] == "-h")
                 {
-                    Console.WriteLine(Helpers.GetOptions());
+                    Console.WriteLine(helper.GetOptions());
                 }
 
                 if (args[0] == "--format" || args[0] == "-f")
