@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		tests\ssg-config3.json = tests\ssg-config3.json
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "..\UnitTest\UnitTest.csproj", "{D62337F0-2BE3-4A4E-B344-061469C0BA1A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{38AC189E-34A8-4734-B4AE-8391F7CD4BFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38AC189E-34A8-4734-B4AE-8391F7CD4BFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38AC189E-34A8-4734-B4AE-8391F7CD4BFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D62337F0-2BE3-4A4E-B344-061469C0BA1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D62337F0-2BE3-4A4E-B344-061469C0BA1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D62337F0-2BE3-4A4E-B344-061469C0BA1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D62337F0-2BE3-4A4E-B344-061469C0BA1A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

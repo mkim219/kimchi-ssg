@@ -17,6 +17,15 @@ namespace Kimchi_ssg
 
     public class Helpers
     {
+        Seperator seperator = new Seperator();
+
+        private readonly IWrapper wrapper;
+
+        public Helpers(IWrapper wrap)
+        {
+            wrapper = wrap;
+        }
+
         /// <summary>
         /// convert txt file string to HTML and markdown to HTML.
         /// </summary>
@@ -29,6 +38,11 @@ namespace Kimchi_ssg
         /// <returns>return complete HTML string.</returns>
         public static string GenerateHTMLStr(string title, string extension, string table, string style, string meta, string[] elements = null)
         {
+            if (elements.Length == 0)
+            {
+                throw new Exception("The file cannot have empty content");
+            }
+
             var bold = new Regex(@"(\*\*|__) (?=\S) (.+?[*_]*) (?<=\S) \1");
             var italic = new Regex(@"(\*|_) (?=\S) (.+?) (?<=\S) \1");
             var anchor = new Regex(@"\[([^]]*)\]\(([^\s^\)]*)[\s\)]");
@@ -246,11 +260,11 @@ namespace Kimchi_ssg
                         contents = File.ReadAllText(filePath).Split(Seperator.NewLineDoubleSeperator);
                     }
 
-                    //get title 
+                    // get title
                     fileName = Path.GetFileNameWithoutExtension(filePath);
                     toHTMLfile = GenerateHTMLStr(fileName, extension, GenerateTableOfContents(fileList), style, GenerateMeta(fileName), contents);
 
-                    //get saving loation
+                    // get saving loation
                     string saveLoc = Path.GetDirectoryName(filePath);
 
                     GenerateHTMLfile(toHTMLfile, outputPath, fileName);
