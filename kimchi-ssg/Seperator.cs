@@ -8,21 +8,21 @@ namespace Kimchi_ssg
 {
     internal class Seperator
     {
-        Helpers helper = new Helpers(null);
+  
 
-        public string PathSeperator
+        public static string PathSeperator
         {
-            get { return helper.IsLinux() ? FrontSlash : BackSlash; }
+            get { return Helpers.IsLinux() ? FrontSlash : BackSlash; }
         }
 
-        public string NewLineSeperator
+        public static string NewLineSeperator
         {
-            get { return helper.IsLinux() ? LinuxNewLine : WindowNewLine; }
+            get { return Helpers.IsLinux() ? LinuxNewLine : WindowNewLine; }
         }
 
-        public string NewLineDoubleSeperator
+        public static string NewLineDoubleSeperator
         {
-            get { return helper.IsLinux() ? LinuxDoubleNewLine : WindowDoubleNewLine; }
+            get { return Helpers.IsLinux() ? LinuxDoubleNewLine : WindowDoubleNewLine; }
         }
 
         public static string LinuxNewLine
