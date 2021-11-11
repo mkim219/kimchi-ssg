@@ -25,3 +25,16 @@ Tools --> Import and Export setting
 --> Import selected environment settings 
 --> Browse kimchi-ssg.vssettings
 ``` 
+
+### Unit Test
+There are two ways you can have unit test
+1. using `cmd`
+  - Go to directory where `UnitTest.csproj` is
+  - Run with `dotnet test` for entire unit testing
+3. Via Visual Studio 2019
+  - Open the `UnitTest.csproj` file
+  - Open the Test explorer on Visual Studio 2019 
+  - You will see sets of unit testing function on `UnitTest.cs` and also in Test Explorer
+  - Click `Run all Test in Views` button for entire testing or Click individual unit test function on Test Explorer and click `Run` button 
+
+
