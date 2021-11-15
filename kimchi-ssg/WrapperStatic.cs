@@ -1,44 +1,44 @@
-﻿namespace kimchi_ssg
+﻿namespace Kimchi_ssg
 {
     using System.Collections.Generic;
 
-    public class WrapperStatic: Kimchi_ssg.IWrapper
+    public class WrapperStatic : IWrapper
     {
-        private readonly Kimchi_ssg.IWrapper wrapper;
+        private readonly IWrapper wrapper;
 
-        public WrapperStatic(Kimchi_ssg.IWrapper wrap)
+        public WrapperStatic(IWrapper wrap)
         {
             wrapper = wrap;
         }
 
         public string WrapGenerateHTMLStr(string title, string extension, string table, string style, string meta, string[] elements = null)
         {
-            return Kimchi_ssg.Helpers.GenerateHTMLStr(title, extension, table, style, meta, elements);
+            return Helpers.GenerateHTMLStr(title, extension, table, style, meta, elements);
         }
 
         public bool WrapIsLinux()
         {
-            return Kimchi_ssg.Helpers.IsLinux();
+            return Helpers.IsLinux();
         }
 
         public string WrapGetVersion()
         {
-            return Kimchi_ssg.Helpers.GetVersion();
+            return Helpers.GetVersion();
         }
 
         public string WrapGetOptions()
         {
-            return Kimchi_ssg.Helpers.GetOptions();
+            return Helpers.GetOptions();
         }
 
         public string WrapGenerateTableOfContents(List<string> files)
         {
-            return Kimchi_ssg.Helpers.GenerateTableOfContents(files);
+            return Helpers.GenerateTableOfContents(files);
         }
 
         public string WrapGenerateMeta(string title)
         {
-            return Kimchi_ssg.Helpers.GenerateMeta(title);
+            return Helpers.GenerateMeta(title);
         }
     }
 }
