@@ -1,0 +1,30 @@
+name: .NET
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Install dependencies
+      run: dotnet restore
+    - name: Run Formatter 
+      run: | 
+        dotnet tool install --global dotnet-format --version 5.1.250
+        dotnet ./kimchi-ssg/kimchi-ssg.sln"
+    - name: Run Linter 
+      run: | 
+        dotnet -a warn ./kimchi-ssg/kimchi-ssg.sln"
+    - name: Test
+      run: dotnet test
