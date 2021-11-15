@@ -17,10 +17,6 @@ namespace Kimchi_ssg
 
     public class Helpers
     {
-        Seperator seperator = new Seperator();
-
-        private readonly IWrapper wrapper;
-
         /// <summary>
         /// convert txt file string to HTML and markdown to HTML.
         /// </summary>
@@ -46,7 +42,7 @@ namespace Kimchi_ssg
             var hr = new Regex(@"(\---) (.*)");
             var code = new Regex(@"\`([^\`].*?)\`");
 
-            List<string> toHtml = new ();
+            List<string> toHtml = new();
             int count = 0;
 
             toHtml.Add(@"<div class=""container"">");
@@ -197,7 +193,7 @@ namespace Kimchi_ssg
             string sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
             string fileName = Path.GetFileNameWithoutExtension(sCurrentDirectory + Seperator.PathSeperator + file);
             string extension = Path.GetExtension(sCurrentDirectory + Seperator.PathSeperator + file);
-            List<string> fileList = new ();
+            List<string> fileList = new();
 
             if (outputFolder == string.Empty || outputFolder == null)
             {

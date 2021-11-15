@@ -41,7 +41,7 @@ namespace UnitTest
         public void GenerateTableOfContentsTest()
         {
             string[] input = { "test1", "test2" };
-            List<string> files = new (input);
+            List<string> files = new(input);
             var mock = new Mock<IWrapper>();
 
             // expected
@@ -55,7 +55,7 @@ namespace UnitTest
         }
 
         [Fact]
-        public void  IsLinuxTest()
+        public void IsLinuxTest()
         {
             var mock = new Mock<IWrapper>();
 
@@ -81,7 +81,7 @@ namespace UnitTest
 
             var mock = new Mock<IWrapper>();
             // expected 
-            
+
             mock.Setup(x => x.WrapGenerateHTMLStr(title, extension, table, style, meta, null)).Returns(It.IsAny<string>());
 
             // actual 

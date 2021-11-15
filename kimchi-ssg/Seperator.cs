@@ -8,8 +8,6 @@ namespace Kimchi_ssg
 {
     internal class Seperator
     {
-  
-
         public static string PathSeperator
         {
             get { return Helpers.IsLinux() ? FrontSlash : BackSlash; }
