@@ -21,11 +21,6 @@ namespace Kimchi_ssg
 
         private readonly IWrapper wrapper;
 
-        public Helpers(IWrapper wrap)
-        {
-            wrapper = wrap;
-        }
-
         /// <summary>
         /// convert txt file string to HTML and markdown to HTML.
         /// </summary>

@@ -4,7 +4,6 @@ namespace UnitTest
     using Xunit;
     using Moq;
     using System.Collections.Generic;
-    using kimchi_ssg;
     using System;
 
     public class UnitTest
