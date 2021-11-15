@@ -27,5 +27,4 @@ jobs:
       run: | 
         dotnet-format -a warn ./kimchi-ssg/kimchi-ssg.sln
     - name: Test
-      working-directory: ./UnitTest
-      run: dotnet test
+      run: dotnet test ./UnitTest/UnitTest.csproj
