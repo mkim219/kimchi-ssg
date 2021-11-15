@@ -1,15 +1,20 @@
-﻿namespace kimchi_ssg
+﻿// -----------------------------------------------------------------------
+// <copyright file="WrapperStatic.cs" company="Minsu Kim">
+// Copyright (c) Minsu Kim. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace Kimchi_ssg
 {
-    using Kimchi_ssg;
     using System.Collections.Generic;
 
-    public class WrapperStatic: IWrapper
+    public class WrapperStatic : IWrapper
     {
         private readonly IWrapper wrapper;
 
         public WrapperStatic(IWrapper wrap)
         {
-            wrapper = wrap;
+            this.wrapper = wrap;
         }
 
         public string WrapGenerateHTMLStr(string title, string extension, string table, string style, string meta, string[] elements = null)

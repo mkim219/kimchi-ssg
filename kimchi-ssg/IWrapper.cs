@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="helpers.cs" company="Minsu Kim">
+// <copyright file="IWrapper.cs" company="Minsu Kim">
 // Copyright (c) Minsu Kim. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
