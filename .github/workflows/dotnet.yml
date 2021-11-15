@@ -18,8 +18,8 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Install dependencies
-      working-directory: ./kimchi-ssg/kimchi-ssg
       run: dotnet restore
+      working-directory: ./kimchi-ssg/kimchi-ssg
     - name: Run Formatter 
       run: | 
         dotnet tool install --global dotnet-format --version 5.1.250
