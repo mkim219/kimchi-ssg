@@ -34,6 +34,11 @@ namespace Kimchi_ssg
                 throw new Exception("The file cannot have empty content");
             }
 
+            if (title == string.Empty)
+            {
+                throw new Exception("The file cannot have empty title");
+            }
+
             var bold = new Regex(@"(\*\*|__) (?=\S) (.+?[*_]*) (?<=\S) \1");
             var italic = new Regex(@"(\*|_) (?=\S) (.+?) (?<=\S) \1");
             var anchor = new Regex(@"\[([^]]*)\]\(([^\s^\)]*)[\s\)]");

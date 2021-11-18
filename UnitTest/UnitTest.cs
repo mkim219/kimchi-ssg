@@ -157,6 +157,27 @@ namespace UnitTest
             // dummy
         }
 
+        [Fact]
+        public void shouldThrowExceptionWhenTitleIsEmpty()
+        {
+            var title = "";
+            var extension = ".md";
+            var table = "this is table";
+            var style = "this is style";
+            var meta = "this is meta";
+            string[] elements = { "# kimchi-ssg", "test2" };
+
+            var mock = new Mock<IWrapper>();
+            // expected 
+            mock.Setup(x => x.WrapGenerateHTMLStr(title, extension, table, style, meta, elements));
+
+            // actual 
+            Action act = () => new WrapperStatic(mock.Object).WrapGenerateHTMLStr(title, extension, table, style, meta, elements);
+            Exception exception = Assert.Throws<Exception>(act);
+
+            Assert.Equal("The file cannot have empty title", exception.Message);
+        }
+
 
     }
 }
