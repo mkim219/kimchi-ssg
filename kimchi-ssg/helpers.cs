@@ -202,9 +202,8 @@ namespace Kimchi_ssg
 
             string outputPath = sCurrentDirectory + Seperator.PathSeperator + outputFolder;
             if (Directory.Exists(outputPath))
-            {
                 Directory.Delete(outputPath, true);
-            }
+            
 
             Directory.CreateDirectory(outputPath + outputFolder);
 
@@ -239,7 +238,7 @@ namespace Kimchi_ssg
 
                 foreach (var filePath in txtList)
                 {
-                    // read the text's paragrah 
+                    //read the text's paragrah 
                     extension = Path.GetExtension(filePath);
                     string[] contents;
                     if (extension == FileExtension.MARKDOWN)
@@ -342,7 +341,7 @@ namespace Kimchi_ssg
         /// Provide "Kimchi-ssg" command line options.
         /// </summary>
         /// <returns>return options.</returns>
-        public static string GetOptions()
+        public static string GetOptions()   
         {
             return @"
                 -i or --input<text file> : Input your text file to convert html, if the text file has space, you should use double-quote
