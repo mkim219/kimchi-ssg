@@ -336,8 +336,9 @@ namespace Kimchi_ssg
         /// Provide "Kimchi-ssg" command line options.
         /// </summary>
         /// <returns>return options.</returns>
-        public static string GetOptions()
-        {           return @"
+        public static string GetOptions()   
+        {
+            return @"
                 -i or --input<text file> : Input your text file to convert html, if the text file has space, you should use double-quote
                 -h or --help: Show the options
                 -v or --version: Show current version
