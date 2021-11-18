@@ -26,6 +26,6 @@ jobs:
     - name: Run Formatter & Linter
       run: |
         dotnet tool install --global dotnet-format --version 5.1.250
-        dotnet-format --check ./kimchi-ssg/kimchi-ssg.sln
+        dotnet-format --check --folder ./kimchi-ssg
     - name: Test
       run: dotnet test ./UnitTest/UnitTest.csproj
