@@ -29,6 +29,11 @@ namespace Kimchi_ssg
         /// <returns>return complete HTML string.</returns>
         public static string GenerateHTMLStr(string title, string extension, string table, string style, string meta, string[] elements = null)
         {
+            if (elements.Length == 0)
+            {
+                throw new Exception("The file cannot have empty content");
+            }
+
             var bold = new Regex(@"(\*\*|__) (?=\S) (.+?[*_]*) (?<=\S) \1");
             var italic = new Regex(@"(\*|_) (?=\S) (.+?) (?<=\S) \1");
             var anchor = new Regex(@"\[([^]]*)\]\(([^\s^\)]*)[\s\)]");
@@ -36,8 +41,9 @@ namespace Kimchi_ssg
             var h2 = new Regex(@"(\#\#) (.*)");
             var hr = new Regex(@"(\---) (.*)");
             var code = new Regex(@"\`([^\`].*?)\`");
-
+          
             List<string> toHtml = new List<string>();
+          
             int count = 0;
 
             toHtml.Add(@"<div class=""container"">");
@@ -188,8 +194,9 @@ namespace Kimchi_ssg
             string sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
             string fileName = Path.GetFileNameWithoutExtension(sCurrentDirectory + Seperator.PathSeperator + file);
             string extension = Path.GetExtension(sCurrentDirectory + Seperator.PathSeperator + file);
-            List<string> fileList = new List<string>();
 
+            List<string> fileList = new List<string>();
+          
             if (outputFolder == string.Empty || outputFolder == null)
             {
                 outputFolder = "dist";

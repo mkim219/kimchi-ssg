@@ -6,6 +6,8 @@ Static Site Generator Open Source Development
 -   C#
 -   .NET 5.0
 -   [Html Agility Pack](https://html-agility-pack.net/) 
+-   [xUnit](https://xunit.net/) for testing
+-   [moq](https://github.com/moq/moq) for testing
 
 ## Installation
 
