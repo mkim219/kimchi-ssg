@@ -26,7 +26,7 @@ jobs:
     - name: Run Formatter 
       run: |
         dotnet tool install --global dotnet-format --version 5.1.250
-        dotnet-format --folder --verbosity diagnostic
+        dotnet-format --check ./kimchi-ssg/kimchi-ssg.sln
     - name: Run Linter 
       run: | 
         dotnet-format -a warn ./kimchi-ssg/kimchi-ssg.sln
