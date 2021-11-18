@@ -141,9 +141,9 @@ namespace Kimchi_ssg
                     ConvertStrToFile(dict["input"], dict["output"], style);
                 }
                 else
-                
+                {
                     ConvertStrToFile(dict["input"], output, style);
-                
+                }
             }
             else
             {
