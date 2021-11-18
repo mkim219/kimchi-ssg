@@ -71,6 +71,30 @@ namespace Kimchi_ssg
         }
 
         /// <summary>
+        /// Check formatting and lingting error.
+        /// </summary>
+        public static void CheckSmell()
+        {
+            var directory = TryGetSolutionDirectoryInfo();
+            var process = new Process();
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = "dotnet-format",
+                Arguments = $"--check {directory}/kimchi-ssg.sln",
+            };
+            try
+            {
+                process.StartInfo = startInfo;
+                process.Start();
+                process.WaitForExit();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        /// <summary>
         /// Fix the lint of the code.
         /// </summary>
         public static void FixLint()

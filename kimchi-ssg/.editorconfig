@@ -12,3 +12,9 @@ dotnet_diagnostic.SA1649.severity = silent
 # https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1461.md
 dotnet_diagnostic.SA1461.severity = silent
 
+# A C# code element is missing a documentation header.
+# https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1600.md
+dotnet_diagnostic.SA1600.severity = silent
+
+dotnet_diagnostic.SA1401.severity = silent
+

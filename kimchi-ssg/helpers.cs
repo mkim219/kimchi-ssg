@@ -37,7 +37,7 @@ namespace Kimchi_ssg
             var hr = new Regex(@"(\---) (.*)");
             var code = new Regex(@"\`([^\`].*?)\`");
 
-            List<string> toHtml = new ();
+            List<string> toHtml = new List<string>();
             int count = 0;
 
             toHtml.Add(@"<div class=""container"">");
@@ -188,7 +188,7 @@ namespace Kimchi_ssg
             string sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
             string fileName = Path.GetFileNameWithoutExtension(sCurrentDirectory + Seperator.PathSeperator + file);
             string extension = Path.GetExtension(sCurrentDirectory + Seperator.PathSeperator + file);
-            List<string> fileList = new ();
+            List<string> fileList = new List<string>();
 
             if (outputFolder == string.Empty || outputFolder == null)
             {
@@ -197,8 +197,9 @@ namespace Kimchi_ssg
 
             string outputPath = sCurrentDirectory + Seperator.PathSeperator + outputFolder;
             if (Directory.Exists(outputPath))
+            {
                 Directory.Delete(outputPath, true);
-            
+            }
 
             Directory.CreateDirectory(outputPath + outputFolder);
 
@@ -224,7 +225,6 @@ namespace Kimchi_ssg
                 List<string> txtList = new List<string>();
                 DirectoryInfo di = new DirectoryInfo(sCurrentDirectory + Seperator.PathSeperator + file);
 
-
                 foreach (var dir in di.EnumerateFiles().Where(x => x.ToString().EndsWith(FileExtension.TEXT) || x.ToString().EndsWith(FileExtension.MARKDOWN)))
                 {
                     txtList.Add(dir.ToString());
@@ -233,7 +233,7 @@ namespace Kimchi_ssg
 
                 foreach (var filePath in txtList)
                 {
-                    //read the text's paragrah 
+                    // read the text's paragrah
                     extension = Path.GetExtension(filePath);
                     string[] contents;
                     if (extension == FileExtension.MARKDOWN)
@@ -245,15 +245,16 @@ namespace Kimchi_ssg
                         contents = File.ReadAllText(filePath).Split(Seperator.NewLineDoubleSeperator);
                     }
 
-                    //get title 
+                    // get title
                     fileName = Path.GetFileNameWithoutExtension(filePath);
                     toHTMLfile = GenerateHTMLStr(fileName, extension, GenerateTableOfContents(fileList), style, GenerateMeta(fileName), contents);
 
-                    //get saving loation
+                    // get saving loation
                     string saveLoc = Path.GetDirectoryName(filePath);
 
                     GenerateHTMLfile(toHTMLfile, outputPath, fileName);
                 }
+
                 GenerateHTMLfile(GenerateHTMLStr("index", "html", GenerateTableOfContents(fileList), style, GenerateMeta("index")), outputPath, "index"); // creating home page
             }
         }
@@ -308,7 +309,7 @@ namespace Kimchi_ssg
             Console.Write($"Enter author for {title}: ");
             string author = Console.ReadLine();
 
-            return $@"<meta name=""keyword"" keyword=""{ keyword}"">
+            return $@"<meta name=""keyword"" keyword=""{keyword}"">
                       <meta name=""description"" description=""{description}"">
                       <meta name=""author"" description=""{author}"">";
         }
@@ -320,9 +321,11 @@ namespace Kimchi_ssg
         /// <returns>It returns a string that include list of files for table of contents.</returns>
         public static string GenerateTableOfContents(List<string> file)
         {
-            List<string> tableOfContents = new List<string>();
-            tableOfContents.Add(@"<div class=""left-nav""><nav>");
-            tableOfContents.Add($@"<ul><li><a href = ""index.html"">Home</a></li>");
+            List<string> tableOfContents = new List<string>()
+            {
+                @"<div class=""left-nav""><nav>",
+                $@"<ul><li><a href = ""index.html"">Home</a></li>",
+            };
             foreach (var x in file)
             {
                 tableOfContents.Add($@"<li><a href = ""{x}.html"">{x}</a></li>");
@@ -336,7 +339,7 @@ namespace Kimchi_ssg
         /// Provide "Kimchi-ssg" command line options.
         /// </summary>
         /// <returns>return options.</returns>
-        public static string GetOptions()   
+        public static string GetOptions()
         {
             return @"
                 -i or --input<text file> : Input your text file to convert html, if the text file has space, you should use double-quote

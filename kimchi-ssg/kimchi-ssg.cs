@@ -53,6 +53,19 @@ namespace Kimchi_ssg
                     }
                 }
 
+                if (args[0] == "--check" || args[0] == "-c")
+                {
+                    if (!Formatter.IsInstalled())
+                    {
+                        Formatter.InstallPackage();
+                        Formatter.CheckSmell();
+                    }
+                    else
+                    {
+                        Formatter.CheckSmell();
+                    }
+                }
+
                 if (args[0] == "--lint" || args[0] == "-l")
                 {
                     Formatter.FixLint();
