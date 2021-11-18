@@ -202,8 +202,9 @@ namespace Kimchi_ssg
 
             string outputPath = sCurrentDirectory + Seperator.PathSeperator + outputFolder;
             if (Directory.Exists(outputPath))
+            {
                 Directory.Delete(outputPath, true);
-            
+            }
 
             Directory.CreateDirectory(outputPath + outputFolder);
 
