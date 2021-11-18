@@ -42,7 +42,7 @@ namespace Kimchi_ssg
             var hr = new Regex(@"(\---) (.*)");
             var code = new Regex(@"\`([^\`].*?)\`");
 
-            List<string> toHtml = new();
+            List<string> toHtml = new List<string>();
             int count = 0;
 
             toHtml.Add(@"<div class=""container"">");
@@ -193,7 +193,7 @@ namespace Kimchi_ssg
             string sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
             string fileName = Path.GetFileNameWithoutExtension(sCurrentDirectory + Seperator.PathSeperator + file);
             string extension = Path.GetExtension(sCurrentDirectory + Seperator.PathSeperator + file);
-            List<string> fileList = new();
+            List<string> fileList = new List<string>();
 
             if (outputFolder == string.Empty || outputFolder == null)
             {
@@ -238,7 +238,7 @@ namespace Kimchi_ssg
 
                 foreach (var filePath in txtList)
                 {
-                    //read the text's paragrah 
+                    // read the text's paragrah 
                     extension = Path.GetExtension(filePath);
                     string[] contents;
                     if (extension == FileExtension.MARKDOWN)
@@ -259,6 +259,7 @@ namespace Kimchi_ssg
 
                     GenerateHTMLfile(toHTMLfile, outputPath, fileName);
                 }
+
                 GenerateHTMLfile(GenerateHTMLStr("index", "html", GenerateTableOfContents(fileList), style, GenerateMeta("index")), outputPath, "index"); // creating home page
             }
         }
@@ -341,7 +342,7 @@ namespace Kimchi_ssg
         /// Provide "Kimchi-ssg" command line options.
         /// </summary>
         /// <returns>return options.</returns>
-        public static string GetOptions()   
+        public static string GetOptions()
         {
             return @"
                 -i or --input<text file> : Input your text file to convert html, if the text file has space, you should use double-quote
