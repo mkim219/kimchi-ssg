@@ -336,9 +336,9 @@ namespace Kimchi_ssg
             tableOfContents.Add(@"<div class=""left-nav""><nav>");
             tableOfContents.Add($@"<ul><li><a href = ""index.html"">Home</a></li>");
             foreach (var x in file)
-            {
+            
                 tableOfContents.Add($@"<li><a href = ""{x}.html"">{x}</a></li>");
-            }
+            
 
             tableOfContents.Add("</ul></nav></div>");
             return string.Join(Seperator.NewLineSeperator, tableOfContents.ToArray());
