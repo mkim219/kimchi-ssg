@@ -1,39 +1,71 @@
-﻿using System;
-using System.IO;
+﻿// -----------------------------------------------------------------------
+// <copyright file="kimchi-ssg.cs" company="Minsu Kim">
+// Copyright (c) Minsu Kim. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
 
-namespace kimchi_ssg
+namespace Kimchi_ssg
 {
-    class kimchi_ssg
+    using System;
+    using System.IO;
+
+    internal class Kimchi_ssg
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             try
             {
-                if (args[0] == "-input" || args[0] == "--i")
+                if (args == null || args.Length == 0)
                 {
-                    Helpers.strToFile(args[1]);
+                    Console.WriteLine("Error: No arguments");
                 }
 
-                if (args[0] == "-version" || args[0] == "--v")
+                if (args[0] == "--config" || args[0] == "-c")
                 {
-                    Console.WriteLine(Helpers.getVersion());
+                    Helpers.ParseJSON(args[1], "dist");
                 }
 
-                if (args[0] == "-help" || args[0] == "-help")
+                if (args[0] == "--input" || args[0] == "-i")
                 {
-                    Console.WriteLine(Helpers.getOptions());
+                    Helpers.ConvertStrToFile(args[1], "dist", Style.Def);
                 }
 
+                if (args[0] == "--version" || args[0] == "-v")
+                {
+                    Console.WriteLine(Helpers.GetVersion());
+                }
+
+                if (args[0] == "--help" || args[0] == "-h")
+                {
+                    Console.WriteLine(Helpers.GetOptions());
+                }
+
+                if (args[0] == "--format" || args[0] == "-f")
+                {
+                    if (!Formatter.IsInstalled())
+                    {
+                        Formatter.InstallPackage();
+                        Formatter.FixFormat();
+                    }
+                    else
+                    {
+                        Formatter.FixFormat();
+                    }
+                }
+
+                if (args[0] == "--lint" || args[0] == "-l")
+                {
+                    Formatter.FixLint();
+                }
             }
-            catch(FileNotFoundException file)
+            catch (FileNotFoundException file)
             {
-                Console.WriteLine("Could not file the file");
+                Console.WriteLine("Could not find the file " + file);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e);
             }
         }
-
     }
 }

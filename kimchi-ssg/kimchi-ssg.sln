@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31702.278
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kimchi-ssg", "kimchi-ssg.csproj", "{38AC189E-34A8-4734-B4AE-8391F7CD4BFF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E1046E12-6D98-45C6-BECD-FCE5D66B197E}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		tests\ssg-config3.json = tests\ssg-config3.json
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "..\UnitTest\UnitTest.csproj", "{D62337F0-2BE3-4A4E-B344-061469C0BA1A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{38AC189E-34A8-4734-B4AE-8391F7CD4BFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38AC189E-34A8-4734-B4AE-8391F7CD4BFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38AC189E-34A8-4734-B4AE-8391F7CD4BFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38AC189E-34A8-4734-B4AE-8391F7CD4BFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D62337F0-2BE3-4A4E-B344-061469C0BA1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D62337F0-2BE3-4A4E-B344-061469C0BA1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D62337F0-2BE3-4A4E-B344-061469C0BA1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D62337F0-2BE3-4A4E-B344-061469C0BA1A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D03891E0-7197-4202-870D-DB936348B3A1}
+	EndGlobalSection
+EndGlobal
