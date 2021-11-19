@@ -35,12 +35,16 @@ Static Site Generator Open Source Development
 
 ## Option
 
+
 -   `--i --input <arguments>`: Input your text file to convert html
 -   `--version`: Show version information
 -   `-?, -h, --help`: Show help and usage information
 -   `-c, --config <json file>`: Run with options on json file
 -   `-f or --format`: Fix the format
 -   `-l or --lint`: Fix the lint 
+
+
+
 
 ## Author
 [Minsu Kim](https://github.com/mkim219)

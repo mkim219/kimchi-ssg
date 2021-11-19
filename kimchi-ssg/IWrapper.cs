@@ -17,5 +17,10 @@ namespace Kimchi_ssg
         string WrapGetOptions();
 
         string WrapGetVersion();
+
+        string WrapGenerateInterporatedstring(string title, string style, string body, string meta)
+        {
+            return Helpers.GenerateInterporatedstring(title, style, body, meta);
+        }
     }
 }
