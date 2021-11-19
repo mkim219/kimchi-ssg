@@ -7,7 +7,7 @@
 namespace Kimchi_ssg
 {
     public interface IWrapper
-    {
+    {      
         string WrapGenerateHTMLStr(string title, string extension, string table, string style, string meta, string[] elements = null);
 
         bool WrapIsLinux();
@@ -17,5 +17,8 @@ namespace Kimchi_ssg
         string WrapGetOptions();
 
         string WrapGetVersion();
-    }
-}
+        string WrapGenerateInterporatedstring(string title, string style, string body, string meta){
+              return Helpers.GenerateInterporatedstring(title,  style, body, meta);
+        } 
+    } 
+} 
