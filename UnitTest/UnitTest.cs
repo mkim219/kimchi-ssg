@@ -178,21 +178,6 @@ namespace UnitTest
             Assert.Equal("The file cannot have empty title", exception.Message);
         }
 
-        [Fact] 
-        public void IsWindowTest()
-        {
-            var mock = new Mock<IWrapper>();
-
-            // expected
-            mock.Setup(x => x.WrapIsLinux()).Returns(true);
-
-            // actual
-            IWrapper obj = mock.Object;
-            bool result = obj.WrapIsLinux();
-
-            mock.VerifyAll();
-            Assert.False(result, "Your Machine is Windows");
-        }
         [Fact]
         public void GenerateMetaTest()
         {
@@ -203,7 +188,7 @@ namespace UnitTest
             string meta = "ssg";
 
             // expected
-            mock.Setup(x => x.WrapGenerateInterporatedstring(title,style,body,meta)).Returns(It.IsAny<string>());
+            mock.Setup(x => x.WrapGenerateInterporatedstring(title, style, body, meta)).Returns(It.IsAny<string>());
 
             IWrapper obj = mock.Object;
             string result = obj.WrapGenerateInterporatedstring(title, style, body, meta);
