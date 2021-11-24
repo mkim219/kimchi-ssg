@@ -178,6 +178,22 @@ namespace UnitTest
             Assert.Equal("The file cannot have empty title", exception.Message);
         }
 
+        [Fact]
+        public void GenerateMetaTest()
+        {
+            var mock = new Mock<IWrapper>();
+            string title = "test";
+            string style = "none";
+            string body = "<div></div>";
+            string meta = "ssg";
 
+            // expected
+            mock.Setup(x => x.WrapGenerateInterporatedstring(title, style, body, meta)).Returns(It.IsAny<string>());
+
+            IWrapper obj = mock.Object;
+            string result = obj.WrapGenerateInterporatedstring(title, style, body, meta);
+
+            Assert.Equal(It.IsAny<string>(), result);
+        }
     }
 }

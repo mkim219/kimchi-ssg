@@ -17,9 +17,10 @@ namespace UnitTest
     public class HelperTest
     {
         [Fact]
-        public void shouldReturnTableOfContentString() {
+        public void shouldReturnTableOfContentString()
+        {
             // GIVEN
-            List<string> strs = new List<string>{"test1"};
+            List<string> strs = new List<string> { "test1" };
 
             // WHEN
             string result = Helpers.GenerateTableOfContents(strs);

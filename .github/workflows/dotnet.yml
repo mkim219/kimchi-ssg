@@ -3,12 +3,8 @@ name: .NET
 on:
   push:
     branches: [ main ]
-    paths:
-      "./kimchi-ssg/.editorconfig"
   pull_request:
     branches: [ main ]
-
-
 
 jobs:
   build:

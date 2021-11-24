@@ -356,8 +356,7 @@ namespace Kimchi_ssg
                 -v or --version: Show current version
 				-c or --config: Parse json to run options
                 -f or --format: Fix the format
-                -l or --lint: Fix the lint 
-            ";
+                -l or --lint: Fix the lint";
         }
 
         /// <summary>
