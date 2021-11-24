@@ -5,10 +5,10 @@
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>kimchi_ssg</RootNamespace>
     <PackAsTool>true</PackAsTool>
-	 <PackageId>Kimchi-ssg</PackageId>
-	 <Version>1.0.0</Version>
+	<PackageId>Kimchi-ssg</PackageId>
+	<Version>1.0.0</Version>
     <Authors>Minsu Kim</Authors>
-	 <IsPackable>true</IsPackable>
+	<IsPackable>true</IsPackable>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Simple .NET application to generate static HTML file(s) from text and MarkDown</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
