@@ -31,10 +31,8 @@ Static Site Generator Open Source Development
 
 ## Publish
 - Via Dotnet
-    ```
-    [Linux]   dotnet publish -r linux-x64 -p:PublishSingleFile=true --self-contained false
-    [Windows] dotnet publish -r win-x64 -p:PublishSingleFile=true --self-contained false
-    ```
+    - Linux   `dotnet publish -r linux-x64 -p:PublishSingleFile=true --self-contained false`
+    - Windows `dotnet publish -r win-x64 -p:PublishSingleFile=true --self-contained false`
 - Via NuGet
     - Before submit the code, make sure you have changed `<version>{version}</version` in `kimchi-ssg.csproj`
     - GitHub Action will process the release for NuGet
