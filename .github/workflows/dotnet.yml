@@ -23,5 +23,12 @@ jobs:
       run: |
         dotnet tool install --global dotnet-format --version 5.1.250
         dotnet-format --check --folder ./kimchi-ssg
-    - name: Test
+    - name: Unit Test
       run: dotnet test ./UnitTest/UnitTest.csproj
+    - name: Publish to NuGet
+      uses: brandedoutcast/publish-nuget@v2
+      with:
+        PROJECT_FILE_PATH: ./kimchi-ssg/kimchi-ssg.csproj
+        VERSION_REGEX: '^\s*<version>(.*)<\/version>\s*$'
+        TAG_FORMAT: '*'
+        NUGET_KEY: ${{secrets.KIMCHI_SSG_NUGET_API_KEY}}
