@@ -24,7 +24,8 @@ jobs:
     - name: Unit Test
       run: dotnet test ./UnitTest/UnitTest.csproj
     - name: Publish NuGet
-      uses: brandedoutcast/publish-nuget@v2.5.5
+      id: publish_nuget
+      uses: rohith/publish-nuget@v2.5.5
       with:
         PROJECT_FILE_PATH: ./kimchi-ssg/kimchi-ssg.csproj
         VERSION_REGEX: '^\s*<version>(.*)<\/version>\s*$'
