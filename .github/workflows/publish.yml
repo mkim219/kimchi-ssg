@@ -27,4 +27,4 @@ jobs:
         with:
           PROJECT_FILE_PATH: ./kimchi-ssg/kimchi-ssg.csproj
           VERSION_REGEX: '^\s*<Version>(.*)<\/Version>\s*$'
-          NUGET_KEY: ${{secrets.KIMCHI_SSG_NUGET_API_KEY}}
+          NUGET_KEY: ${{secrets.KIMCHI_SSG_NUGET_KEY}}
