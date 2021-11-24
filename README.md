@@ -1,5 +1,7 @@
 # kimchi-ssg
 
+[![Nuget](https://img.shields.io/nuget/v/Kimchi-ssg)](https://www.nuget.org/packages/Kimchi-ssg/1.0.0)
+
 Static Site Generator Open Source Development
 
 ## Built with
