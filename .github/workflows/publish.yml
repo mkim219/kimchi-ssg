@@ -26,5 +26,7 @@ jobs:
         uses: rohith/publish-nuget@v2
         with:
           PROJECT_FILE_PATH: ./kimchi-ssg/kimchi-ssg.csproj
+           PACKAGE_NAME: Kimchi-ssg
           VERSION_REGEX: '^\s*<Version>(.*)<\/Version>\s*$'
           NUGET_KEY: ${{secrets.KIMCHI_SSG_NUGET_KEY}}
+        
