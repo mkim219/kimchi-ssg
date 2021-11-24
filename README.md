@@ -25,8 +25,8 @@ Static Site Generator Open Source Development
 2.   Open "kimchi-ssg.csproj" C# project file
     3i.  Build the project with ctrl+shift+B (if you Windows user)
     3ii. Build and publish project with "dotnet build", then "dotnet publish"(Linux User - see Publish section for options)
-4.   Go to directory "\bin\Release\net5.0", you can find kimchi-ssg.exe or "/bin/Debug/net5.0" for linux
-5.   Run command prompt and change directory where kimchi-ssg.exe (windows) or ./kimichi-ssg (Linux) locates at
+4.   Go to directory `\bin\Release\net5.0`, you can find `kimchi-ssg.exe` or `/bin/Debug/net5.0` for linux
+5.   Run command prompt and change directory where `kimchi-ssg.exe` (windows) or `./kimichi-ssg` (Linux) locates at
 
 
 ## Publish
