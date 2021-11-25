@@ -15,31 +15,27 @@ Static Site Generator Open Source Development
 
 1.  Clone the reposistory
 2.  Change solution configuration into `release` and build solution in Visual Studio
-3.  Open the cmd 
-4.  Type command `dotnet tool install --global --add-source <project_root_path>/bin/release kimchi-ssg`
+3.  Open the cmd or terminal
+4.  Type command `dotnet tool install --global --add-source <project_root_path>/bin/release kimchi-ssg.exe`
 5.  Check installation `dotnet tool list --global`
 
 ## Without Installation
 
-1.   Clone https://github.com/mkim219/kimchi-ssg
+1.   Clone repository https://github.com/mkim219/kimchi-ssg.git
 2.   Open "kimchi-ssg.csproj" C# project file
-    3i.  Build the project with ctrl+shift+B (if you Windows user)
-    3ii. Build and publish project with "dotnet build", then "dotnet publish"(Linux User - see Publish section for options)
+3.   Build the project with ctrl+shift+B (if you Windows user) with either `debug` or `release` mode
 4.   Go to directory `\bin\Release\net5.0`, you can find `kimchi-ssg.exe` or `/bin/Debug/net5.0` for linux
 5.   Run command prompt and change directory where `kimchi-ssg.exe` (windows) or `./kimichi-ssg` (Linux) locates at
 
 
-## Publish
-- Via Dotnet
-    - Linux   `dotnet publish -r linux-x64 -p:PublishSingleFile=true --self-contained false`
-    - Windows `dotnet publish -r win-x64 -p:PublishSingleFile=true --self-contained false`
+## Release
 - Via NuGet
     - Before submit the code, make sure you have changed `<version>{version}</version` in `kimchi-ssg.csproj`
     - GitHub Action will process the release for NuGet
 
 ## Option
 
--   `--i --input <arguments>`: Input your text file to convert html
+-   `--i --input <arguments>`: Input your text or Markdown file and folder to convert html
 -   `--version`: Show version information
 -   `-?, -h, --help`: Show help and usage information
 -   `-c, --config <json file>`: Run with options on json file
