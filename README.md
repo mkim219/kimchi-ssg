@@ -1,6 +1,6 @@
 # kimchi-ssg
 
-[![Nuget](https://img.shields.io/nuget/v/Kimchi-ssg)](https://www.nuget.org/packages/Kimchi-ssg/1.0.0)
+[![Nuget](https://img.shields.io/nuget/v/Kimchi-ssg)](https://www.nuget.org/packages/Kimchi-ssg/1.0.1)
 
 Static Site Generator Open Source Development
 
