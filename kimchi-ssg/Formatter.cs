@@ -56,7 +56,7 @@ namespace Kimchi_ssg
             var startInfo = new ProcessStartInfo
             {
                 FileName = "dotnet-format",
-                Arguments = $"{directory}/kimchi-ssg.sln",
+                Arguments = $"{directory}{Seperator.Escape}kimchi-ssg.sln",
             };
             try
             {
@@ -80,7 +80,7 @@ namespace Kimchi_ssg
             var startInfo = new ProcessStartInfo
             {
                 FileName = "dotnet-format",
-                Arguments = $"-a warn {directory}/kimchi-ssg.sln",
+                Arguments = $"-a warn {directory}{Seperator.Escape}kimchi-ssg.sln",
             };
             try
             {

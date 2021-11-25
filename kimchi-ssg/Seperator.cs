@@ -23,6 +23,11 @@ namespace Kimchi_ssg
             get { return Helpers.IsLinux() ? LinuxDoubleNewLine : WindowDoubleNewLine; }
         }
 
+        public static string Escape
+        {
+            get { return Helpers.IsLinux() ? FrontSlash : BackSlash; }
+        }
+
         public static string LinuxNewLine
         {
             get { return "\n"; }

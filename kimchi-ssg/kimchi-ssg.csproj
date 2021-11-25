@@ -6,7 +6,7 @@
     <RootNamespace>kimchi_ssg</RootNamespace>
     <PackAsTool>true</PackAsTool>
 	<PackageId>Kimchi-ssg</PackageId>
-	<Version>1.0.1</Version>
+	<Version>1.0.2</Version>
     <Authors>Minsu Kim</Authors>
 	<IsPackable>true</IsPackable>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
